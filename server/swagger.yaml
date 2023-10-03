@@ -1,0 +1,285 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  description: Cooperative API documen
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+apis: ['server.js']
+paths:
+  /api/users:
+    get:
+      tags:
+        - User
+      summary: all users.
+      description: get all users.
+      responses:
+        '200':    # status code
+          description: List of users
+          content:
+            application/json:
+              schema: 
+                type: array
+  /api/user/{id}:
+    get:
+      tags:
+        - User
+      summary: user.
+      description: get user by id.
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: user
+          content:
+            application/json:
+              schema: 
+                type: array
+  /api/income/{id}:
+    get:
+      tags:
+        - Income
+      summary: user income.
+      description: get income by user id.
+      operationId: getAllIncomeByUser
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: income
+          content:
+            application/json:
+              schema: 
+                type: array
+    post:
+      tags:
+        - Income
+      summary: Add an income
+      description: ''
+      operationId: addIncome
+      parameters:
+        - name: id
+          in: path
+          description: ID of user that needs to be added
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                money:
+                  type: integer
+                  format: Int64
+                money_type:
+                  type: string
+      responses:
+        '405':
+          description: Invalid input
+  /api/income:
+    put:
+      tags:
+        - Income
+      summary: Update an income
+      description: ''
+      operationId: updateIncome
+      parameters:
+        - name: userId
+          in: query
+          description: Id of User that needs to be updated
+          schema:
+            type: string
+          require: true
+        - name: incomeId
+          in: query
+          description: Id of Income that needs to be updated
+          schema:
+            type: string
+          require: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                money:
+                  type: integer
+                  format: Int64
+                money_type:
+                  type: string
+      responses:
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - Income
+      summary: Delete an income
+      description: ''
+      operationId: deleteIncome
+      parameters:
+        - name: userId
+          in: query
+          description: Id of User that needs to be updated
+          schema:
+            type: string
+        - name: incomeId
+          in: query
+          description: Id of Income that needs to be updated
+          schema:
+            type: string
+  /api/expense/{id}:
+    get:
+      tags:
+        - expense
+      summary: user expense.
+      description: get expense by user id.
+      operationId: getAllExpenseByUser
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: income
+          content:
+            application/json:
+              schema: 
+                type: array
+    post:
+      tags:
+        - expense
+      summary: Add an expense
+      description: ''
+      operationId: addExpense
+      parameters:
+        - name: id
+          in: path
+          description: ID of user that needs to be added
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                money:
+                  type: integer
+                  format: Int64
+                money_type:
+                  type: string
+      responses:
+        '405':
+          description: Invalid input
+  /api/expense:
+    put:
+      tags:
+        - expense
+      summary: Update an expense
+      description: ''
+      operationId: updateExpense
+      parameters:
+        - name: userId
+          in: query
+          description: Id of User that needs to be updated
+          schema:
+            type: string
+          require: true
+        - name: expenseId
+          in: query
+          description: Id of Expense that needs to be updated
+          schema:
+            type: string
+          require: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                money:
+                  type: integer
+                  format: Int64
+                exp_type:
+                  type: string
+      responses:
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - expense
+      summary: Delete an expense
+      description: ''
+      operationId: deleteExpense
+      parameters:
+        - name: userId
+          in: query
+          description: Id of User that needs to be updated
+          schema:
+            type: string
+        - name: expenseId
+          in: query
+          description: Id of Expense that needs to be updated
+          schema:
+            type: string
+  /api/login:
+    post:
+      tags:
+        - function
+      summary: login
+      description: ''
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: 
+                  type: string
+                pwd:
+                  type: string
+      responses:
+        '405':
+          description: Invalid input
+  /api/register:
+    post:
+      tags:
+        - function
+      summary: register
+      description: ''
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email: 
+                  type: string
+                pwd:
+                  type: string
+      responses:
+        '405':
+          description: Invalid input

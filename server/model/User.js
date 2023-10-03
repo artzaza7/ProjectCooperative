@@ -9,14 +9,17 @@ const userSchema = new mongoose.Schema({
     Expense: [
         {
             money: {type: Number},
-            exp_type: String,
-            createDate: {type: Date}
+            money_type: String,
+            createDate: {type: Date},
+            createDay: {type: String}
         }
     ],
     Income: [
         {
             money: {type: Number},
-            createDate: {type: Date}
+            money_type: String,
+            createDate: {type: Date},
+            createDay: {type: String}
         }
     ],
     user_createDate: {type: Date}
