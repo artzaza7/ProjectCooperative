@@ -140,10 +140,58 @@ paths:
           description: Id of Income that needs to be updated
           schema:
             type: string
+  /api/income/year/months:
+    get:
+      tags:
+        - Income
+      summary: user income summary.
+      description: get income summary by user id.
+      operationId: incomeYearSum
+      parameters:
+        - name: id
+          in: query
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: income
+          content:
+            application/json:
+              schema: 
+                type: array
+  /api/income/months/{month}/types:
+    get:
+      tags:
+        - Income
+      summary: user income month summary.
+      description: get income month summary by user id.
+      operationId: incomeMonthSum
+      parameters:
+        - name: id
+          in: query
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+        - name: month
+          in: path
+          description: number of month
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: income
+          content:
+            application/json:
+              schema: 
+                type: array
   /api/expense/{id}:
     get:
       tags:
-        - expense
+        - Expense
       summary: user expense.
       description: get expense by user id.
       operationId: getAllExpenseByUser
@@ -163,7 +211,7 @@ paths:
                 type: array
     post:
       tags:
-        - expense
+        - Expense
       summary: Add an expense
       description: ''
       operationId: addExpense
@@ -191,7 +239,7 @@ paths:
   /api/expense:
     put:
       tags:
-        - expense
+        - Expense
       summary: Update an expense
       description: ''
       operationId: updateExpense
@@ -224,7 +272,7 @@ paths:
           description: Invalid input
     delete:
       tags:
-        - expense
+        - Expense
       summary: Delete an expense
       description: ''
       operationId: deleteExpense
@@ -239,10 +287,79 @@ paths:
           description: Id of Expense that needs to be updated
           schema:
             type: string
+  /api/expense/year/months:
+    get:
+      tags:
+        - Expense
+      summary: user expense summary.
+      description: get expense summary by user id.
+      operationId: expenseYearSum
+      parameters:
+        - name: id
+          in: query
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: income
+          content:
+            application/json:
+              schema: 
+                type: array
+  /api/expense/months/{month}/types:
+    get:
+      tags:
+        - Expense
+      summary: user expense month summary.
+      description: get expense month summary by user id.
+      operationId: expenseMonthSum
+      parameters:
+        - name: id
+          in: query
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+        - name: month
+          in: path
+          description: number of month
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: income
+          content:
+            application/json:
+              schema: 
+                type: array
+  /api/money/{id}:
+    get:
+      tags:
+        - Money
+      summary: user money.
+      description: get money by user id.
+      operationId: getAllByUser
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: income
+          content:
+            application/json:
+              schema: 
+                type: array
   /api/login:
     post:
       tags:
-        - function
+        - Function
       summary: login
       description: ''
       operationId: login
@@ -262,7 +379,7 @@ paths:
   /api/register:
     post:
       tags:
-        - function
+        - Function
       summary: register
       description: ''
       operationId: register

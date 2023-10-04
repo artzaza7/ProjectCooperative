@@ -225,5 +225,183 @@ async function login (req,res) {
     }
 }
 
+async function getAllByUser(req,res){
+    const user = await User.findOne({ "_id": req.params['id'] })
+    res.json({
+        "massage": "process complete",
+        "data": [
+            {
+                income: user.Income
+            },
+            {
+                expense: user.Expense
+            }
+        ],
+        "status": res.statusCode
+    })
+}
 
-module.exports = { readUser,register,login,findById,addIncome,getAllIncomeByUser,deleteIncome,addExpense,getAllExpenseByUser,deleteExpense,updateIncome,updateExpense }
+async function incomeYearSum(req,res){
+    const user = await User.findOne({ "_id": req.query['id'] })
+    const income = user.Income
+    let sumMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
+    console.log(income[0].createDate.getMonth())
+    for(let i=0;i<income.length;i++){
+        for(let j=0;j<12;j++){
+            if(income[i].createDate.getMonth()==j){
+                sumMonth[j] = sumMonth[j] + income[i].money
+            }
+        }
+    }
+    let sum = 0
+    for(let i=0;i<sumMonth.length;i++){
+        sum += sumMonth[i]
+    }
+    console.log(sumMonth)
+    console.log(typeof(income[0].money))
+    res.json({
+        "message": "process complete",
+        "data": [{
+            sumMonth: sumMonth,
+            summary: sum
+        }],
+        "status": res.statusCode
+    })
+
+}
+async function expenseYearSum(req,res){
+    const user = await User.findOne({ "_id": req.query['id'] })
+    const expense = user.Expense
+    let sumMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
+    console.log(expense[0].createDate.getMonth())
+    for(let i=0;i<expense.length;i++){
+        for(let j=0;j<12;j++){
+            if(expense[i].createDate.getMonth()==j){
+                sumMonth[j] = sumMonth[j] + expense[i].money
+            }
+        }
+    }
+    let sum = 0
+    for(let i=0;i<sumMonth.length;i++){
+        sum += sumMonth[i]
+    }
+    res.json({
+        "message": "process complete",
+        "data": [{
+            sumMonth: sumMonth,
+            summary: sum
+        }],
+        "status": res.statusCode
+    })
+
+}
+async function incomeMonthSum(req,res){
+    //["เงินเดือน","เงินพิเศษ","โบนัส"]
+    const user = await User.findOne({ "_id": req.query['id'] })
+    let m = req.params['month']
+    let month = parseInt(m)
+    month -= 1
+    let sum = [0,0,0]
+    const income = user.Income
+    for(let i=0;i<income.length;i++){
+        if(income[i].createDate.getMonth()==month){
+            
+            if(!income[i].money_type.localeCompare("เงินเดือน")){
+                sum[0] += income[i].money
+            }
+            else if(!income[i].money_type.localeCompare("เงินพิเศษ")){
+                sum[1] += income[i].money
+            }
+            else if(!income[i].money_type.localeCompare("โบนัส")){
+                sum[2] += income[i].money
+            }
+
+
+        }
+    }
+    let summary = 0
+    for(let i=0;i<sum.length;i++){
+        summary += sum[i]
+    }
+    //console.log(income[0].createDate.getMonth())
+    //console.log(typeof(month))
+    //console.log(sum)
+    res.json({
+        "message": "process complete",
+        "data": {
+            sumType: sum,
+            summary: summary
+        },
+        "status": res.statusCode
+    })
+}
+async function expenseMonthSum(req,res){
+    //["ค่าอาหาร","ค่าเดินทาง","ค่าที่พัก","หนี้","ความสุข","ค่าของใช้"]
+    const user = await User.findOne({ "_id": req.query['id'] })
+    let m = req.params['month']
+    let month = parseInt(m)
+    month -= 1
+    let sum = [0,0,0,0,0,0]
+    const expense = user.Expense
+    for(let i=0;i<expense.length;i++){
+        if(expense[i].createDate.getMonth()==month){
+            
+            if(!expense[i].money_type.localeCompare("ค่าอาหาร")){
+                sum[0] += expense[i].money
+            }
+            else if(!expense[i].money_type.localeCompare("ค่าเดินทาง")){
+                sum[1] += expense[i].money
+            }
+            else if(!expense[i].money_type.localeCompare("ค่าที่พัก")){
+                sum[2] += expense[i].money
+            }
+            else if(!expense[i].money_type.localeCompare("หนี้")){
+                sum[3] += expense[i].money
+            }
+            else if(!expense[i].money_type.localeCompare("ความสุข")){
+                sum[4] += expense[i].money
+            }
+            else if(!expense[i].money_type.localeCompare("ค่าของใช้")){
+                sum[5] += expense[i].money
+            }
+
+
+        }
+    }
+    let summary = 0
+    for(let i=0;i<sum.length;i++){
+        summary += sum[i]
+    }
+    //console.log(income[0].createDate.getMonth())
+    //console.log(typeof(month))
+    //console.log(sum)
+    res.json({
+        "message": "process complete",
+        "data": {
+            sumType: sum,
+            summary: summary
+        },
+        "status": res.statusCode
+    })
+}
+
+
+module.exports = { 
+    readUser,
+    register,
+    login,
+    findById,
+    addIncome,
+    getAllIncomeByUser,
+    deleteIncome,
+    addExpense,
+    getAllExpenseByUser,
+    deleteExpense,
+    updateIncome,
+    updateExpense,
+    getAllByUser,
+    incomeYearSum,
+    expenseYearSum,
+    incomeMonthSum,
+    expenseMonthSum
+ }

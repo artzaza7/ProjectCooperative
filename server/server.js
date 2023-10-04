@@ -24,11 +24,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
 
 
-// readdirSync('./routes').map((r)=>{
-//     app.use('/api', require('./routes/'+r))
-// })
+readdirSync('./Routes').map((r)=>{
+    app.use('/api', require('./Routes/'+r))
+})
 
-app.use('/api', require('./routes/userRoute'))
 
 
 
