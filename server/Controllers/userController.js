@@ -171,18 +171,6 @@ async function register (req,res) {
             email: email.toLowerCase(),
             pwd: encryptedPwd
         })
-
-        //Create token
-        const token = jwt.sign(
-            { user_id: user._id, email},
-            process.env.TOKEN_KEY,
-            {
-                expiresIn: "2h"
-            }
-        )
-
-        //save user token
-        user.token = token
         user.user_createDate = new Date()
         res.status(201).json({
             "message": "User has been created",

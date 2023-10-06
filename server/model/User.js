@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema({
     last_name: {type: String, default: null},
     email: {type: String, unique: true},
     pwd: {type: String},
-    token: {type: String},
     Expense: [
         {
             money: {type: Number},
