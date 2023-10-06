@@ -23,9 +23,9 @@ root.render(
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/alltransaction" element={<AllTranscation />} />
+        <Route path="/update" element={<UpdateForm />} />
         <Route path="/incomeform" element={<IncomeForm />} />
         <Route path="/expenseform" element={<ExpenseForm />} />
-        <Route path="/update" element={<UpdateForm />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

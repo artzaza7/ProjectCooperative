@@ -199,11 +199,9 @@ async function login (req,res) {
                 }
             )
             
-            user.token = token
-
             res.status(200).json({
                 "message": "Logged in",
-                "data": user,
+                "data": token,
                 "status": res.statusCode
             })
         }
