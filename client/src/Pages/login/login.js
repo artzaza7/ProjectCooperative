@@ -23,7 +23,7 @@ function Login() {
     }
     try {
       const response = await login(data);
-      // console.log(response);
+      console.log(response);
       // Success
       console.log("sign in successful : " + response.message);
       localStorage.setItem('token', response.data);
@@ -59,6 +59,7 @@ function Login() {
                   id="form2Example11"
                   className="form-control lable"
                   placeholder=""
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <label htmlFor="formGroupExampleInput2" className="text1">
@@ -70,22 +71,21 @@ function Login() {
                   id="form2Example22"
                   className="form-control lable"
                   placeholder=""
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </form>
-            <a href="#!" className="text2 text-muted">
+            {/* <a href="#!" className="text2 text-muted">
               Forgot password?
-            </a>
+            </a> */}
             <br />
 
-            <Link to="/home">
-              <Button variant="primary" className="button">
-                SIGN IN
-              </Button>{" "}
-            </Link>
+            <Button variant="primary" className="button" onClick={handleSubmitSignIn}>
+              SIGN IN
+            </Button>
             <div className="text3">OR</div>
-            <Link to="/register">
-              <Button className="button">SIGN UP</Button>{" "}
+            <Link to="/register" style={{ textDecoration: 'none' }}>
+              <Button className="button" >SIGN UP</Button>
             </Link>
           </div>
         </div>

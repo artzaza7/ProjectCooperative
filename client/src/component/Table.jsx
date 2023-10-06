@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDBDataTable } from 'mdbreact';
-import { Container, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 const DatatablePage = () => {
     const data = {

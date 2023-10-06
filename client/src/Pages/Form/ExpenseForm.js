@@ -1,32 +1,64 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom"; // Import the useLocation hook
 import NavCustom from "../../component/Nav";
 import Footer from "../../component/Footer";
 import { Container, Button, Stack, Dropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+// Import API 
+import { createExpenseWithUserId } from "../../service/ExpenseService";
+
+// Import Library
+import jwtDecode from 'jwt-decode';
 
 function ExpenseForm() {
-  const location = useLocation(); // Use the useLocation hook to access the location object
-  const typeName = location.state?.typeName; // Access the typeName prop safely using optional chaining
 
-  const [formData, setFormData] = useState({
-    amountMoney: "",
-    type: "",
-  });
+  // Navigator
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const expenses = ['ค่าอาหาร', 'ค่าเดินทาง', 'ค่าที่พัก', 'หนี้', 'ความสุข', 'ค่าของใช้'];
 
-  const handleSubmit = (e) => {
+  // Data for create Income or Expense
+  const [money, setMoney] = useState(0)
+  const [type, setType] = useState(expenses[0])
+
+  const expenseDropdown = expenses.map((expense, index) => {
+    return <Dropdown.Item key={index} onClick={(e) => setType(expense)}>{expense}</Dropdown.Item>;
+  })
+
+  // function handleSubmitFunction
+  async function handleSubmitFunction(e) {
+    // NOT REFESH PAGE
     e.preventDefault();
-    // Handle form submission, e.g., send data to a server or perform other actions
-    console.log(formData);
-  };
+
+    // Get token
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      var data = {
+        "money": money,
+        "money_type": type
+      }
+      // console.log("Token ", token);
+      const user_id = jwtDecode(token).user_id;
+      try {
+        const response = await createExpenseWithUserId(user_id, data)
+        // Success
+        console.log("Create Expense successful : " + response.message);
+
+        // Reset Value
+        setMoney(0);
+        setType(expenses[0]);
+
+      } catch (error) {
+        console.log(error.response.data.message);
+        console.log("Create Expense not successful");
+      }
+    } else {
+      // Don't have token
+      console.log("Don't have token");
+      navigate("/");
+    }
+  }
 
   return (
     <>
@@ -56,7 +88,7 @@ function ExpenseForm() {
           alignItems: "center",
         }}
       >
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className="mb-3">
             <label htmlFor="amountMoney" className="form-label">
               Amount Money
@@ -66,22 +98,8 @@ function ExpenseForm() {
               className="form-control"
               id="amountMoney"
               name="amountMoney"
-              value={formData.amountMoney}
-              onChange={handleChange}
-              style={{ width: "368px" }}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="amountMoney" className="form-label">
-              Amount Money
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="amountMoney"
-              name="amountMoney"
-              value={formData.amountMoney}
-              onChange={handleChange}
+              value={money}
+              onChange={(e) => setMoney(e.target.value)}
               style={{ width: "368px" }}
             />
           </div>
@@ -95,23 +113,19 @@ function ExpenseForm() {
                 id="dropdown-basic"
                 style={{ width: "368px" }}
               >
-                Select Month
+                {type}
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ width: "368px" }}>
-                <Dropdown.Item href="#/action-1">Type1</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Type2</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Type3</Dropdown.Item>
+                {expenseDropdown}
               </Dropdown.Menu>
             </Dropdown>
           </div>
           <Stack direction="horizontal" gap={3}>
             <div className="p-2">
-              <Link to="/alltransaction">
-                <Button type="submit" className="btn btn-primary">
+                <Button type="submit" className="btn btn-primary" onClick={(e) => handleSubmitFunction(e)}>
                   Submit
-                </Button>{" "}
-              </Link>
+                </Button>
             </div>
 
             <div className="p-2 ms-auto">

@@ -10,8 +10,8 @@ import login_image2 from "../../assets/images/logo.png";
 import { register } from "../../service/FunctionService";
 
 function Register() {
+  // Navigator
   const navigate = useNavigate();
-
 
   // Data for Register
   const [email, setEmail] = useState('');
@@ -64,29 +64,31 @@ function Register() {
             <div className="Header">Sign Up</div>
             <form>
               <label htmlFor="formGroupExampleInput" className="text1">
-                Name
+                Email
               </label>
               <div className="form-outline mb-4">
                 <input
-                  type="text"
+                  type="email"
                   id="form2Example11"
                   className="form-control lable"
                   placeholder=""
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <label htmlFor="formGroupExampleInput2" className="text1">
-                Email
+                Firstname
               </label>
               <div className="form-outline mb-2">
                 <input
-                  type="email"
+                  type="text"
                   id="form2Example22"
                   className="form-control lable"
                   placeholder=""
+                  onChange={(e) => setFirstname(e.target.value)}
                 />
               </div>
               <label htmlFor="formGroupExampleInput3" className="text1">
-                UserName
+                Lastname
               </label>
               <div className="form-outline mb-2">
                 <input
@@ -94,6 +96,7 @@ function Register() {
                   id="form2Example23"
                   className="form-control lable"
                   placeholder=""
+                  onChange={(e) => setLastname(e.target.value)}
                 />
               </div>
               <label htmlFor="formGroupExampleInput4" className="text1">
@@ -105,6 +108,7 @@ function Register() {
                   id="form2Example24"
                   className="form-control lable"
                   placeholder=""
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <label htmlFor="formGroupExampleInput5" className="text1">
@@ -116,13 +120,11 @@ function Register() {
                   id="form2Example25"
                   className="form-control lable"
                   placeholder=""
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
             </form>
-
-            <Link to="/">
-              <Button className="button2">SIGN UP</Button>{" "}
-            </Link>
+              <Button className="button2" onClick={handleSubmitSignUp}>SIGN UP</Button>{" "}
           </div>
         </div>
       </div>
