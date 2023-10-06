@@ -43,7 +43,7 @@ const BarChartYear = () => {
     return (
         <CDBContainer>
 
-            <div class="Chartlable" >Financial of Year</div>
+            <div className="Chartlable" >Financial of Year</div>
 
             <Bar data={data} options={{ responsive: true }} />
         </CDBContainer>

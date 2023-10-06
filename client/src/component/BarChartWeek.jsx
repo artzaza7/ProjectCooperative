@@ -44,7 +44,7 @@ const BarChartWeek = () => {
     return (
         <CDBContainer>
 
-            <div class="Chartlable" >Financial of Week</div>
+            <div className="Chartlable" >Financial of Week</div>
             <Bar data={data} options={{ responsive: true }} />
         </CDBContainer>
     );

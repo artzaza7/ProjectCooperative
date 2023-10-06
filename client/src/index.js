@@ -11,8 +11,9 @@ import "bootstrap/dist/js/bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
 import "bootstrap/dist/js/bootstrap.min.js";
-import IncomeForm from "./Pages/Form";
-import ExpenseForm from "./Pages/Form";
+import IncomeForm from "./Pages/Form/IncomeForm";
+import ExpenseForm from "./Pages/Form/ExpenseForm";
+import UpdateForm from "./Pages/Form/UpdateForm";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -24,6 +25,7 @@ root.render(
         <Route path="/alltransaction" element={<AllTranscation />} />
         <Route path="/incomeform" element={<IncomeForm />} />
         <Route path="/expenseform" element={<ExpenseForm />} />
+        <Route path="/update" element={<UpdateForm />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

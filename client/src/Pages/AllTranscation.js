@@ -2,7 +2,7 @@ import React from "react";
 import Nav from "../component/Nav";
 import Footer from "../component/Footer";
 import DatatablePage from "../component/Table";
-import { Card, Col, Container, Row, Dropdown, Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 function AllTranscation() {
   return (
@@ -41,14 +41,14 @@ function AllTranscation() {
       </div>
       <Container>
         <ul
-          class="nav nav-tabs justify-content-center"
+          className="nav nav-tabs justify-content-center"
           id="myTab"
           role="tablist"
         >
           <div className="Header">
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
               <button
-                class="nav-link active"
+                className="nav-link active"
                 id="home-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#home"
@@ -61,9 +61,9 @@ function AllTranscation() {
                 All
               </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
               <button
-                class="nav-link"
+                className="nav-link"
                 id="profile-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#profile"
@@ -76,9 +76,9 @@ function AllTranscation() {
                 Income
               </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
               <button
-                class="nav-link"
+                className="nav-link"
                 id="contact-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#contact"
@@ -93,9 +93,9 @@ function AllTranscation() {
             </li>
           </div>
         </ul>
-        <div class="tab-content" id="myTabContent">
+        <div className="tab-content" id="myTabContent">
           <div
-            class="tab-pane fade show active"
+            className="tab-pane fade show active"
             id="home"
             role="tabpanel"
             aria-labelledby="home-tab"
@@ -104,7 +104,7 @@ function AllTranscation() {
             <DatatablePage />
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="profile"
             role="tabpanel"
             aria-labelledby="profile-tab"
@@ -113,7 +113,7 @@ function AllTranscation() {
             <DatatablePage />
           </div>
           <div
-            class="tab-pane fade"
+            className="tab-pane fade"
             id="contact"
             role="tabpanel"
             aria-labelledby="contact-tab"
@@ -124,7 +124,7 @@ function AllTranscation() {
         </div>
       </Container>
 
-      <div class=" mt-auto">
+      <div className=" mt-auto">
         <Footer />
       </div>
     </>

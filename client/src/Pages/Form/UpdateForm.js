@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom"; // Import the useLocation hook
-import NavCustom from "../component/Nav";
-import Footer from "../component/Footer";
+import NavCustom from "../../component/Nav";
+import Footer from "../../component/Footer";
 import { Container, Button, Stack, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-function IncomeForm() {
+
+function UpdateForm() {
   const location = useLocation(); // Use the useLocation hook to access the location object
   const typeName = location.state?.typeName; // Access the typeName prop safely using optional chaining
 
@@ -46,8 +47,7 @@ function IncomeForm() {
         }}
         className="TextHeader"
       >
-        {typeName}
-        ทำไมกูส่งค่ามาแล้วแต่มันไม่แสดง
+        UpdateForm
       </div>
       <Container
         style={{
@@ -124,11 +124,11 @@ function IncomeForm() {
           </Stack>
         </form>
       </Container>
-      <div class="mt-auto">
+      <div className="mt-auto">
         <Footer />
       </div>
     </>
   );
 }
 
-export default IncomeForm;
+export default UpdateForm;

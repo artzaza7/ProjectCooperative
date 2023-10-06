@@ -1,6 +1,7 @@
 import React from 'react';
 import { MDBDataTable } from 'mdbreact';
-
+import { Container, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 const DatatablePage = () => {
     const data = {
         columns: [
@@ -60,7 +61,16 @@ const DatatablePage = () => {
                 age: '61',
                 date: '2011/04/25',
                 salary: '$320',
-                update: <button className='btn btn-warning'>Update</button>,
+                update: <Link
+                    to={{
+                        pathname: "/update",
+                        state: { typeName: "Update" },
+                    }}
+                >
+                    <Button variant="warning" style={{ marginRight: "1rem" }}>
+                        Update
+                    </Button>
+                </Link>,
                 delete: <button className='btn btn-danger'>Delete</button>,
             },
             {
