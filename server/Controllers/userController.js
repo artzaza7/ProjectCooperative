@@ -282,7 +282,7 @@ async function expenseYearSum(req,res){
 
 }
 async function incomeMonthSum(req,res){
-    //["เงินเดือน","เงินพิเศษ","โบนัส"]
+    //["เงินเดือน","งานพิเศษ","โบนัส"]
     const user = await User.findOne({ "_id": req.query['id'] })
     let m = req.params['month']
     let month = parseInt(m)
@@ -295,7 +295,7 @@ async function incomeMonthSum(req,res){
             if(!income[i].money_type.localeCompare("เงินเดือน")){
                 sum[0] += income[i].money
             }
-            else if(!income[i].money_type.localeCompare("เงินพิเศษ")){
+            else if(!income[i].money_type.localeCompare("งานพิเศษ")){
                 sum[1] += income[i].money
             }
             else if(!income[i].money_type.localeCompare("โบนัส")){

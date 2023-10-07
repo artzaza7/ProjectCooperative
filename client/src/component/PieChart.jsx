@@ -1,19 +1,46 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
-import { CategoryScale, BarElement, LinearScale, Chart, ArcElement } from "chart.js";
+import { CategoryScale, BarElement, LinearScale, Chart, ArcElement, Legend, Tooltip } from "chart.js";
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
 Chart.register(BarElement);
 Chart.register(ArcElement);
+Chart.register(Legend);
+Chart.register(Tooltip);
+
+// const for Dropdown
+const incomes = ['เงินเดือน', 'งานพิเศษ', 'โบนัส'];
+const expenses = ['ค่าอาหาร', 'ค่าเดินทาง', 'ค่าที่พัก', 'หนี้', 'ความสุข', 'ค่าของใช้'];
+
 class PieChart extends React.Component {
 
-    state = {
+    stataForIncome = {
         dataPie: {
-            labels: ["Red", "Green", "Yellow", "Grey", "Dark Grey"],
+            labels: incomes,
             datasets: [
                 {
-                    data: [300, 50, 100, 40, 120],
+                    data: this.props.dataIncome,
+                    backgroundColor: [
+                        "#F7464A",
+                        "#46BFBD",
+                        "#FDB45C"
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF5A5E",
+                        "#5AD3D1",
+                        "#FFC870"
+                    ]
+                }
+            ]
+        }
+    }
+    stateForExpense = {
+        dataPie: {
+            labels: expenses,
+            datasets: [
+                {
+                    data: [300, 50, 100, 40, 120, 120],
                     backgroundColor: [
                         "#F7464A",
                         "#46BFBD",
@@ -36,11 +63,10 @@ class PieChart extends React.Component {
     }
 
     render() {
-
         return (
             <MDBContainer>
                 <h3 className="Chartlable">{this.props.chartName}</h3>
-                <Pie data={this.state.dataPie} options={{ responsive: true }} />
+                <Pie data={this.props.mode === "income" ? this.stataForIncome.dataPie : this.stateForExpense.dataPie} options={{ responsive: true }} />
             </MDBContainer>
         );
     }

@@ -33,7 +33,7 @@ const BarChartWeek = () => {
 
             },
             {
-                label: 'Expends',
+                label: 'Expense',
                 backgroundColor: 'rgba(71, 225, 167, 0.5)',
                 borderColor: 'rgb(71, 225, 167)',
                 data: [28, 48, 40, 19, 96, 27, 100],

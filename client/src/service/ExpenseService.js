@@ -13,6 +13,37 @@ const createExpenseWithUserId = async (id, data) => {
     }
 };
 
+// Get METHOD
+const getAllExpensesInYearByUserId = async (id) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/expense/year/months`, {
+            params: {
+                id: id
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียก API');
+        throw error;
+    }
+};
 
-export { createExpenseWithUserId, };
+// Get METHOD
+const getAllExpenseInYearWithTypesByUserId = async (month, id) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/expense/months/${month}/types`, {
+            params: {
+                id: id,
+                // month: month
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียก API');
+        throw error;
+    }
+};
+
+
+export { createExpenseWithUserId, getAllExpensesInYearByUserId, getAllExpenseInYearWithTypesByUserId };
 
