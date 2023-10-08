@@ -18,13 +18,30 @@ import { useNavigate } from "react-router-dom";
 
 // Adding API
 import { getAllIncomesInYearByUserId, getAllIncomesInYearWithTypesByUserId } from '../service/IncomeService'
-import { getAllExpensesInYearByUserId, getAllExpenseInYearWithTypesByUserId } from "../service/ExpenseService";
+import { getAllExpensesInYearByUserId, getAllExpenseInYearWithTypesByUserId } from "../service/ExpenseService"
+import { getMoneyByUserId } from "../service/MoneyService"
 
 // Import Library
 import jwtDecode from 'jwt-decode';
 import moment from 'moment';
 
+// Money Class
+class Money {
+  constructor(type, id, money, money_type, createDate, createDay) {
+    this.type = type;
+    this.id = id;
+    this.money = money;
+    this.money_type = money_type;
+    this.createDate = createDate;
+    this.createDay = createDay;
+  }
+}
+
 function Home() {
+  // สร้างอาร์เรย์ของเงิน (Money objects)
+  const [monies, setMonies] = useState([])
+  const [loadingMoney, setLoadingMoney] = useState(true)
+
   const currentMonth = moment().format('MMMM'); // จัดรูปแบบแสดงเดือนในรูปแบบข้อความ
 
   // Navigator
@@ -40,8 +57,9 @@ function Home() {
   const [expenseMonth, setExpenseMonth] = useState(0)
   const [totalMonth, setTotalMonth] = useState(0)
 
-  const [arrayIncome, setArrayIncome] = useState([])
-  const [arrayExpense, setArrayExpense] = useState([])
+  const [arrayIncome, setArrayIncome] = useState([0, 0, 0])
+  const [arrayExpense, setArrayExpense] = useState([0, 0, 0, 0, 0, 0])
+  const [loadingArray, setLoadingArray] = useState(true)
 
   const months = [
     { name: 'January', value: 1 },
@@ -73,17 +91,102 @@ function Home() {
     if (token) {
       const user_id = jwtDecode(token).user_id;
       try {
+        setLoadingArray(true);
+
         const responseIncomeMonth = await getAllIncomesInYearWithTypesByUserId(month_value, user_id)
+        const responseExpenseMonth = await getAllExpenseInYearWithTypesByUserId(month_value, user_id)
+
         const newIncomeMonthSummary = responseIncomeMonth.data.summary
         // Update incomeMonth
         setIncomeMonth(newIncomeMonthSummary)
 
-        const responseExpenseMonth = await getAllExpenseInYearWithTypesByUserId(month_value, user_id)
         const newExpenseMonthSummary = responseExpenseMonth.data.summary
         // Update expenseMonth
         setExpenseMonth(newExpenseMonthSummary)
 
         setTotalMonth(newIncomeMonthSummary - newExpenseMonthSummary)
+
+        setArrayIncome(responseIncomeMonth.data.sumType)
+        setArrayExpense(responseExpenseMonth.data.sumType)
+
+        setLoadingArray(false);
+
+
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+    else {
+      // Don't have token
+      console.log("Don't have token");
+      navigate("/");
+    }
+  }
+  async function getMoney() {
+    // Get token
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const user_id = jwtDecode(token).user_id;
+      try {
+        const response = await getMoneyByUserId(user_id);
+        const listIncome = response.data[0].income
+        const listExpense = response.data[1].expense
+
+        const moneyAll = [];
+
+        // Loop listIncome
+        for (let i = 0; i < listIncome.length; i++) {
+          const money = new Money("INCOME", listIncome[i]._id, listIncome[i].money, listIncome[i].money_type, listIncome[i].createDate, listIncome[i].createDay)
+          // console.log(money);
+          moneyAll.push(money);
+        }
+
+        // Loop listExpense
+        for (let i = 0; i < listExpense.length; i++) {
+          const money = new Money("EXPENSE", listExpense[i]._id, listExpense[i].money, listExpense[i].money_type, listExpense[i].createDate, listExpense[i].createDay)
+          // console.log(money);
+          moneyAll.push(money);
+        }
+        setMonies(moneyAll)
+        // Finish loading Money
+        setLoadingMoney(false)
+      }
+      catch (error) {
+        console.error(error.message);
+      }
+    }
+    else {
+      // Don't have token
+      console.log("Don't have token");
+      navigate("/");
+    }
+  }
+
+  async function getMonthData() {
+    // Get token
+    const token = localStorage.getItem('token');
+
+    // Get 
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจาก getMonth() คืนค่าเดือนเริ่มต้นที่ 0
+    if (token) {
+      const user_id = jwtDecode(token).user_id;
+      try {
+
+        const responseIncomeMonth = await getAllIncomesInYearWithTypesByUserId(currentMonth, user_id)
+        // Update arrayIncome
+        const newArrayIncome = Object.values(responseIncomeMonth.data.sumType)
+        setArrayIncome(newArrayIncome)
+
+        const responseExpenseMonth = await getAllExpenseInYearWithTypesByUserId(currentMonth, user_id)
+        // Update arrayExpense
+        const newArrayExpense = Object.values(responseExpenseMonth.data.sumType)
+        setArrayExpense(newArrayExpense)
+
+        // Finish Loading
+        setLoadingArray(false)
+
       } catch (error) {
         console.error(error.message);
       }
@@ -96,6 +199,7 @@ function Home() {
   }
 
   async function getData() {
+
     // Get token
     const token = localStorage.getItem('token');
 
@@ -122,20 +226,12 @@ function Home() {
         const newIncomeMonthSummary = responseIncomeMonth.data.summary
         // Update incomeMonth
         setIncomeMonth(newIncomeMonthSummary)
-        // Update arrayIncome
-        const newArrayIncome = responseIncomeMonth.data.sumType
-        setArrayIncome(newArrayIncome);
-        console.log(responseIncomeMonth.data.sumType)
-        console.log(newArrayIncome)
-        console.log(arrayIncome)
+
 
         const responseExpenseMonth = await getAllExpenseInYearWithTypesByUserId(currentMonth, user_id)
         const newExpenseMonthSummary = responseExpenseMonth.data.summary
         // Update expenseMonth
         setExpenseMonth(newExpenseMonthSummary)
-        // Update arrayExpense
-        const newArrayExpense = responseExpenseMonth.data.sumType
-        setArrayExpense(newArrayExpense)
 
         setTotalMonth(newIncomeMonthSummary - newExpenseMonthSummary)
 
@@ -153,6 +249,8 @@ function Home() {
 
   useEffect(() => {
     getData();
+    getMonthData();
+    getMoney();
   }, [])
 
   return (
@@ -218,7 +316,7 @@ function Home() {
             className="d-flex flex-column justify-content-center align-items-center"
           >
             <div style={{ padding: "20px", width: "70%" }}>
-              <PieChart chartName={"Chart1"} mode={"income"} dataIncome={arrayIncome} />
+              {!loadingArray ? <PieChart chartName={"Chart1"} mode={"income"} data={arrayIncome} /> : <></>}
             </div>
             {/* <Row style={{ gap: "0.3rem" }}>
               <MoneyCardBlue
@@ -241,7 +339,7 @@ function Home() {
             className="d-flex flex-column justify-content-center align-items-center"
           >
             <div style={{ padding: "20px", width: "70%" }}>
-              <PieChart chartName={"Chart2"} mode={"expense"} dataExpense={arrayExpense} />
+              {!loadingArray ? <PieChart chartName={"Chart2"} mode={"expense"} data={arrayExpense} /> : <></>}
             </div>
             {/* <Row style={{ gap: "0.5rem" }}>
               <MoneyCardBlue
@@ -292,7 +390,9 @@ function Home() {
           className="mx-auto text-center"
         >
           <Container fluid style={{ backgroundColor: "#FFC107" }}>
-            <Table />
+            {!loadingMoney ? <Table monies={monies} />
+              : <div>LOADING</div>
+            }
           </Container>
         </Card>
         <Footer />

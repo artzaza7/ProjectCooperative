@@ -20,7 +20,7 @@ class PieChart extends React.Component {
             labels: incomes,
             datasets: [
                 {
-                    data: this.props.dataIncome,
+                    data: this.props.data,
                     backgroundColor: [
                         "#F7464A",
                         "#46BFBD",
@@ -40,7 +40,7 @@ class PieChart extends React.Component {
             labels: expenses,
             datasets: [
                 {
-                    data: [300, 50, 100, 40, 120, 120],
+                    data: this.props.data,
                     backgroundColor: [
                         "#F7464A",
                         "#46BFBD",

@@ -2,58 +2,141 @@ import React from 'react';
 import { MDBDataTable } from 'mdbreact';
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-const DatatablePage = () => {
+import { format } from 'date-fns';
+
+const DatatablePage = (props) => {
+    const { monies } = props
+    const rowData = []
+    const colData = [
+        {
+            label: 'ID',
+            field: 'id',
+            sort: 'asc',
+            width: 100
+        },
+        {
+            label: 'Type',
+            field: 'type',
+            sort: 'asc',
+            width: 150
+        },
+        {
+            label: 'Money',
+            field: 'money',
+            sort: 'asc',
+            width: 270
+        },
+        {
+            label: 'Money_Type',
+            field: 'money_type',
+            sort: 'asc',
+            width: 200
+        },
+        {
+            label: 'CreateDate',
+            field: 'createDate',
+            sort: 'asc',
+            width: 100
+        },
+        {
+            label: 'CreateDay',
+            field: 'createDay',
+            sort: 'asc',
+            width: 150
+        },
+        {
+            label: 'Update',
+            field: 'update',
+            sort: 'asc',
+            width: 100
+        },
+        {
+            label: 'Delete',
+            field: 'delete',
+            sort: 'asc',
+            width: 100
+        }
+    ]
+
+    if (monies.length !== 0) {
+        for (let i = 0; i < monies.length; i++) {
+            const formattedDate = format(new Date(monies[i].createDate), 'dd MMM yyyy HH:mm:ss');
+
+            var fixData = {
+                id: monies[i].id,
+                type: monies[i].type,
+                money: monies[i].money,
+                money_type: monies[i].money_type,
+                createDate: formattedDate,
+                createDay: monies[i].createDay,
+                update: <Link
+                    to={{
+                        pathname: "/update",
+                        state: { typeName: "Update" },
+                    }}
+                >
+                    <Button variant="warning" style={{ marginRight: "1rem" }}>
+                        Update
+                    </Button>
+                </Link>,
+                delete: <button className='btn btn-danger'>Delete</button>,
+            }
+            rowData.push(fixData)
+        }
+    }
+
     const data = {
-        columns: [
+        columns: monies.length === 0 ? [
             {
                 label: 'Name',
                 field: 'name',
                 sort: 'asc',
-                width: 150
+                width: 100
             },
             {
                 label: 'Position',
                 field: 'position',
                 sort: 'asc',
-                width: 270
+                width: 150
             },
             {
                 label: 'Office',
                 field: 'office',
                 sort: 'asc',
-                width: 200
+                width: 270
             },
             {
                 label: 'Age',
                 field: 'age',
                 sort: 'asc',
-                width: 100
+                width: 200
             },
             {
                 label: 'Start date',
                 field: 'date',
                 sort: 'asc',
-                width: 150
+                width: 100
             },
             {
                 label: 'Salary',
                 field: 'salary',
                 sort: 'asc',
-                width: 100
-            }
-            , {
+                width: 150
+            },
+            {
                 label: 'Update',
                 field: 'update',
                 sort: 'asc',
                 width: 100
-            }, {
+            },
+            {
                 label: 'Delete',
                 field: 'delete',
                 sort: 'asc',
                 width: 100
             }
-        ],
-        rows: [
+        ] : colData,
+        rows: monies.length === 0 ? [
             {
                 name: 'Tiger Nixon',
                 position: 'System Architect',
@@ -127,9 +210,8 @@ const DatatablePage = () => {
                 date: '2011/02/03',
                 salary: '$234', update: <button className='btn btn-warning'>Update</button>,
                 delete: <button className='btn btn-danger'>Delete</button>,
-            },
-
-        ]
+            }
+        ] : rowData
     };
     const customStyles = {
         table: {

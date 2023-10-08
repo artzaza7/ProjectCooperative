@@ -34,7 +34,7 @@ const getAllIncomesInYearWithTypesByUserId = async (month, id) => {
         const response = await axios.get(`${API_BASE_URL}/income/months/${month}/types`, {
             params: {
                 id: id,
-                // month: month
+                month: month
             }
         });
         return response.data;
