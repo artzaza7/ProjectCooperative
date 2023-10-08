@@ -282,7 +282,7 @@ async function expenseYearSum(req,res){
 
 }
 async function incomeMonthSum(req,res){
-    //["เงินเดือน","เงินพิเศษ","โบนัส"]
+    const money_type = ["เงินเดือน","เงินพิเศษ","โบนัส"]
     const user = await User.findOne({ "_id": req.query['id'] })
     let m = req.params['month']
     let month = parseInt(m)
@@ -291,16 +291,21 @@ async function incomeMonthSum(req,res){
     const income = user.Income
     for(let i=0;i<income.length;i++){
         if(income[i].createDate.getMonth()==month){
+            for(let j=0;j<money_type.length;j++){
+                if(!income[i].money_type.localeCompare(money_type[j])){
+                    sum[j] += income[i].money
+                }
+            }
             
-            if(!income[i].money_type.localeCompare("เงินเดือน")){
-                sum[0] += income[i].money
-            }
-            else if(!income[i].money_type.localeCompare("เงินพิเศษ")){
-                sum[1] += income[i].money
-            }
-            else if(!income[i].money_type.localeCompare("โบนัส")){
-                sum[2] += income[i].money
-            }
+            // if(!income[i].money_type.localeCompare("เงินเดือน")){
+            //     sum[0] += income[i].money
+            // }
+            // else if(!income[i].money_type.localeCompare("เงินพิเศษ")){
+            //     sum[1] += income[i].money
+            // }
+            // else if(!income[i].money_type.localeCompare("โบนัส")){
+            //     sum[2] += income[i].money
+            // }
 
 
         }
@@ -322,7 +327,7 @@ async function incomeMonthSum(req,res){
     })
 }
 async function expenseMonthSum(req,res){
-    //["ค่าอาหาร","ค่าเดินทาง","ค่าที่พัก","หนี้","ความสุข","ค่าของใช้"]
+    const money_type = ["ค่าอาหาร","ค่าเดินทาง","ค่าที่พัก","หนี้","ความสุข","ค่าของใช้"]
     const user = await User.findOne({ "_id": req.query['id'] })
     let m = req.params['month']
     let month = parseInt(m)
@@ -331,24 +336,10 @@ async function expenseMonthSum(req,res){
     const expense = user.Expense
     for(let i=0;i<expense.length;i++){
         if(expense[i].createDate.getMonth()==month){
-            
-            if(!expense[i].money_type.localeCompare("ค่าอาหาร")){
-                sum[0] += expense[i].money
-            }
-            else if(!expense[i].money_type.localeCompare("ค่าเดินทาง")){
-                sum[1] += expense[i].money
-            }
-            else if(!expense[i].money_type.localeCompare("ค่าที่พัก")){
-                sum[2] += expense[i].money
-            }
-            else if(!expense[i].money_type.localeCompare("หนี้")){
-                sum[3] += expense[i].money
-            }
-            else if(!expense[i].money_type.localeCompare("ความสุข")){
-                sum[4] += expense[i].money
-            }
-            else if(!expense[i].money_type.localeCompare("ค่าของใช้")){
-                sum[5] += expense[i].money
+            for(let j=0;j<money_type.length;j++){
+                if(!expense[i].money_type.localeCompare(money_type[j])){
+                    sum[j] += expense[i].money
+                }
             }
 
 
