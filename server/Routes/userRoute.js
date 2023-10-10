@@ -23,7 +23,7 @@ router.get('/expense/year/months',userController.expenseYearSum)
 router.get('/expense/months/:month/types', userController.expenseMonthSum)
 
 router.get('/money/:id', userController.getAllByUser)
-
+router.get('/alltype/:month', userController.getIncAndExpByMonth)
 
 
 

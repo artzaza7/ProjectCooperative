@@ -362,6 +362,85 @@ async function expenseMonthSum(req,res){
     })
 }
 
+async function getIncAndExpByMonth(req,res){
+    const inc_type = ["เงินเดือน","เงินพิเศษ","โบนัส"]
+    const exp_type = ["ค่าอาหาร","ค่าเดินทาง","ค่าที่พัก","หนี้","ความสุข","ค่าของใช้"]
+    const user = await User.findOne({ "_id": req.query['id'] })
+    let m = req.params['month']
+    let month = parseInt(m)
+    month -= 1
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+    let inc = [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
+    //Income
+    const income = user.Income
+    for(let i=0;i<income.length;i++){
+        if(income[i].createDate.getMonth()==month){
+            for(let j=0;j<inc.length;j++){
+                if(income[i].createDate.getDay()==j){
+                    for(let k=0;k<inc_type.length;k++){
+                        if(!income[i].money_type.localeCompare(inc_type[k])){
+                            inc[j][k] += income[i].money
+                        }
+                    }
+                }
+            }
+        }
+    }
+    let exp = [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
+    const expense = user.Expense
+    for(let i=0;i<expense.length;i++){
+        if(expense[i].createDate.getMonth()==month){
+            for(let j=0;j<exp.length;j++){
+                if(expense[i].createDate.getDay()==j){
+                    for(let k=0;k<exp_type.length;k++){
+                        if(!expense[i].money_type.localeCompare(exp_type[k])){
+                            exp[j][k] += expense[i].money
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //console.log(inc)
+    res.json({
+        "message": "process complete",
+        "data":{
+            month: months[month],
+            sunday: {
+                Income: inc[0],
+                Expense: exp[0]
+            },
+            monday: {
+                Income: inc[1],
+                Expense: exp[1]
+            },
+            tuesday: {
+                Income: inc[2],
+                Expense: exp[2]
+            },
+            wednesday: {
+                Income: inc[3],
+                Expense: exp[3]
+            },
+            thursday: {
+                Income: inc[4],
+                Expense: exp[4]
+            },
+            friday: {
+                Income: inc[5],
+                Expense: exp[5]
+            },
+            saturday: {
+                Income: inc[6],
+                Expense: exp[6]
+            },
+        },
+        "status": res.statusCode
+    })
+}
 
 module.exports = { 
     readUser,
@@ -380,5 +459,6 @@ module.exports = {
     incomeYearSum,
     expenseYearSum,
     incomeMonthSum,
-    expenseMonthSum
+    expenseMonthSum,
+    getIncAndExpByMonth
  }

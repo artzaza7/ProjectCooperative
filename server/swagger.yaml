@@ -356,6 +356,33 @@ paths:
             application/json:
               schema: 
                 type: array
+  /api/alltype/{month}:
+    get:
+      tags:
+        - Money
+      summary: user income and expense.
+      description: get income and expense by user id.
+      operationId: getIncAndExpByMonth
+      parameters:
+        - name: month
+          in: path
+          description: month to return
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: income
+          content:
+            application/json:
+              schema: 
+                type: array
   /api/login:
     post:
       tags:
