@@ -101,7 +101,7 @@ function AllTranscation() {
             aria-labelledby="home-tab"
             style={{ backgroundColor: "whitesmoke" }}
           >
-            <DatatablePage />
+            <DatatablePage monies={[]}/>
           </div>
           <div
             className="tab-pane fade"
@@ -110,7 +110,7 @@ function AllTranscation() {
             aria-labelledby="profile-tab"
             style={{ backgroundColor: "whitesmoke" }}
           >
-            <DatatablePage />
+            <DatatablePage monies={[]}/>
           </div>
           <div
             className="tab-pane fade"
@@ -119,7 +119,7 @@ function AllTranscation() {
             aria-labelledby="contact-tab"
             style={{ backgroundColor: "whitesmoke" }}
           >
-            <DatatablePage />
+            <DatatablePage monies={[]}/>
           </div>
         </div>
       </Container>

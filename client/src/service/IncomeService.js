@@ -13,6 +13,37 @@ const createIncomeWithUserId = async (id, data) => {
     }
 };
 
+// Get METHOD
+const getAllIncomesInYearByUserId = async (id) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/income/year/months`, {
+            params: {
+                id: id
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียก API');
+        throw error;
+    }
+};
 
-export { createIncomeWithUserId, };
+// Get METHOD
+const getAllIncomesInYearWithTypesByUserId = async (month, id) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/income/months/${month}/types`, {
+            params: {
+                id: id,
+                month: month
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียก API');
+        throw error;
+    }
+};
+
+
+export { createIncomeWithUserId, getAllIncomesInYearByUserId, getAllIncomesInYearWithTypesByUserId };
 
