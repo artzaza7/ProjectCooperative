@@ -441,6 +441,54 @@ async function getIncAndExpByMonth(req,res){
         "status": res.statusCode
     })
 }
+async function getByUserAndInc(req,res){
+    try {
+        const userId = req.query['userId']
+        const incomeId = req.query['incomeId']
+
+        const user = await User.findOne({_id: userId})
+        let income = user.Income
+        let inc
+        console.log(income[0]._id.toString())
+        console.log(incomeId)
+        for(let i=0;i<user.Income.length;i++){
+            if(!income[i]._id.toString().localeCompare(incomeId)){
+                inc = income[i]
+            }
+        }
+        res.json({
+            "message": "process complete",
+            "data": inc,
+            "status": res.statusCode
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+async function getByUserAndExp(req,res){
+    try {
+        const userId = req.query['userId']
+        const expenseId = req.query['expenseId']
+
+        const user = await User.findOne({_id: userId})
+        let expense = user.Expense
+        let exp
+        // console.log(expense[0]._id.toString())
+        // console.log(expenseId)
+        for(let i=0;i<user.Income.length;i++){
+            if(!expense[i]._id.toString().localeCompare(expenseId)){
+                exp = expense[i]
+            }
+        }
+        res.json({
+            "message": "process complete",
+            "data": exp,
+            "status": res.statusCode
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 module.exports = { 
     readUser,
@@ -460,5 +508,7 @@ module.exports = {
     expenseYearSum,
     incomeMonthSum,
     expenseMonthSum,
-    getIncAndExpByMonth
+    getIncAndExpByMonth,
+    getByUserAndInc,
+    getByUserAndExp
  }

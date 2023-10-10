@@ -123,6 +123,28 @@ paths:
       responses:
         '405':
           description: Invalid input
+    get:
+      tags:
+        - Income
+      summary: get an income
+      description: ''
+      operationId: getByUserAndInc
+      parameters:
+        - name: userId
+          in: query
+          description: Id of User
+          schema:
+            type: string
+          require: true
+        - name: incomeId
+          in: query
+          description: Id of Income
+          schema:
+            type: string
+          require: true
+      responses:
+        '200':
+          description: process complete
     delete:
       tags:
         - Income
@@ -270,6 +292,28 @@ paths:
       responses:
         '405':
           description: Invalid input
+    get:
+      tags:
+        - Expense
+      summary: get an expense
+      description: ''
+      operationId: getByUserAndExp
+      parameters:
+        - name: userId
+          in: query
+          description: Id of User
+          schema:
+            type: string
+          require: true
+        - name: expenseId
+          in: query
+          description: Id of Expense
+          schema:
+            type: string
+          require: true
+      responses:
+        '200':
+          description: process complete
     delete:
       tags:
         - Expense
