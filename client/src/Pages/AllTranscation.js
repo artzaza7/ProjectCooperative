@@ -1,10 +1,89 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "../component/Nav";
 import Footer from "../component/Footer";
 import DatatablePage from "../component/Table";
 import { Container, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+// Adding API
+import { getMoneyByUserId } from "../service/MoneyService"
+
+// Import Library
+import jwtDecode from 'jwt-decode';
+
+// Money Class
+class Money {
+  constructor(type, id, money, money_type, createDate, createDay) {
+    this.type = type;
+    this.id = id;
+    this.money = money;
+    this.money_type = money_type;
+    this.createDate = createDate;
+    this.createDay = createDay;
+  }
+}
+
 function AllTranscation() {
+  // Navigator
+  const navigate = useNavigate();
+
+  // Setting loading
+  const [loading, setLoading] = useState(false)
+  const [allArray, setAllArray] = useState([])
+  const [incomeArray, setIncomeArray] = useState([])
+  const [expenseArray, setExpenseArray] = useState([])
+
+  async function getDataInIt() {
+    // Get token
+    const token = localStorage.getItem('token');
+    if (token) {
+      const user_id = jwtDecode(token).user_id;
+      try {
+        const response = await getMoneyByUserId(user_id);
+        const listIncome = response.data[0].income
+        const listExpense = response.data[1].expense
+
+        const moneyAll = [];
+        const moneyIncome = [];
+        const moneyExpense = [];
+        // Loop listIncome
+        for (let i = 0; i < listIncome.length; i++) {
+          const money = new Money("INCOME", listIncome[i]._id, listIncome[i].money, listIncome[i].money_type, listIncome[i].createDate, listIncome[i].createDay)
+          // console.log(money);
+          moneyAll.push(money);
+          moneyIncome.push(money);
+        }
+        setIncomeArray(moneyIncome)
+
+        // Loop listExpense
+        for (let i = 0; i < listExpense.length; i++) {
+          const money = new Money("EXPENSE", listExpense[i]._id, listExpense[i].money, listExpense[i].money_type, listExpense[i].createDate, listExpense[i].createDay)
+          // console.log(money);
+          moneyAll.push(money);
+          moneyExpense.push(money);
+        }
+        setExpenseArray(moneyExpense)
+
+        setAllArray(moneyAll)
+        // Finish loading Money
+        setLoading(false)
+
+      }
+      catch (error) {
+        console.log(error.response.data.message);
+      }
+    }
+    else {
+      // Don't have token
+      console.log("Don't have token");
+      navigate("/");
+    }
+  }
+
+  useEffect(() => {
+    getDataInIt()
+  }, [loading])
+
   return (
     <>
       <Nav />
@@ -101,7 +180,9 @@ function AllTranscation() {
             aria-labelledby="home-tab"
             style={{ backgroundColor: "whitesmoke" }}
           >
-            <DatatablePage monies={[]}/>
+            {!loading ? <DatatablePage monies={allArray} />
+              : <div>LOADING</div>
+            }
           </div>
           <div
             className="tab-pane fade"
@@ -110,7 +191,9 @@ function AllTranscation() {
             aria-labelledby="profile-tab"
             style={{ backgroundColor: "whitesmoke" }}
           >
-            <DatatablePage monies={[]}/>
+            {!loading ? <DatatablePage monies={incomeArray} />
+              : <div>LOADING</div>
+            }
           </div>
           <div
             className="tab-pane fade"
@@ -119,7 +202,9 @@ function AllTranscation() {
             aria-labelledby="contact-tab"
             style={{ backgroundColor: "whitesmoke" }}
           >
-            <DatatablePage monies={[]}/>
+            {!loading ? <DatatablePage monies={expenseArray} />
+              : <div>LOADING</div>
+            }
           </div>
         </div>
       </Container>

@@ -1,10 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MDBDataTable } from 'mdbreact';
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Button, Modal } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { format } from 'date-fns';
 
+// Import API
+import { deleteExpenseByIdAndUserId } from "../service/ExpenseService"
+import { deleteIncomeByIdAndUserId } from "../service/IncomeService"
+
+// Import Library
+import jwtDecode from 'jwt-decode';
+
 const DatatablePage = (props) => {
+    // Navigator
+    const navigate = useNavigate()
+
+    // Function for Modal
+    const [modalId, setModalId] = useState("")
+    const [modalType, setModalType] = useState("")
+    const [modalMoney, setModalMoney] = useState(0)
+    const [modalMoneyType, setModalMoneyType] = useState("")
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+
+    async function deleteSubmit() {
+        const token = localStorage.getItem("token")
+        if (token) {
+            const user_id = jwtDecode(token).user_id
+            try {
+                if (modalType === "INCOME") {
+                    const responseDeleteIncome = await deleteIncomeByIdAndUserId(user_id, modalId)
+                    console.log(responseDeleteIncome.message)
+                }
+                else {
+                    const responseDeleteExpense = await deleteExpenseByIdAndUserId(user_id, modalId)
+                    console.log(responseDeleteExpense.message)
+                }
+                setShow(false)
+                navigate("/home")
+            }
+            catch (error) {
+                console.log(error.message)
+            }
+        }
+        else {
+            console.log("Don't have token")
+            navigate("/")
+        }
+
+    }
+
+    function handleShow(id, type, money, moneyType) {
+        setModalId(id)
+        setModalType(type)
+        setModalMoney(money)
+        setModalMoneyType(moneyType)
+        // openModal
+        setShow(true)
+    }
+
     const { monies } = props
     const rowData = []
     const colData = [
@@ -71,7 +126,7 @@ const DatatablePage = (props) => {
                 createDay: monies[i].createDay,
                 update: <Link
                     to={{
-                        pathname: "/update",
+                        pathname: `/update/${monies[i].id}/${monies[i].type}`,
                         state: { typeName: "Update" },
                     }}
                 >
@@ -79,7 +134,7 @@ const DatatablePage = (props) => {
                         Update
                     </Button>
                 </Link>,
-                delete: <button className='btn btn-danger'>Delete</button>,
+                delete: <button className='btn btn-danger' onClick={() => handleShow(monies[i].id, monies[i].type, monies[i].money, monies[i].money_type)}>Delete</button>,
             }
             rowData.push(fixData)
         }
@@ -224,14 +279,32 @@ const DatatablePage = (props) => {
         },
     };
     return (
-        <MDBDataTable
-            striped
-            bordered
-            hover
-            data={data}
-            style={customStyles.tableWrapper}
-            responsive
-        />
+        <>
+            <MDBDataTable
+                striped
+                bordered
+                hover
+                data={data}
+                style={customStyles.tableWrapper}
+                responsive
+            />
+
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>ถามอีกครั้งสำหรับการลบข้อมูล</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>ID : {modalId} ({modalType}) | ประเภท {modalMoneyType}, {modalMoney} บาท</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        ปิด
+                    </Button>
+                    <Button variant="danger" onClick={deleteSubmit}>
+                        ลบข้อมูล
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+
     );
 }
 

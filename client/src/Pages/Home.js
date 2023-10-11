@@ -380,8 +380,8 @@ function Home() {
             <BarChartWeek />
           </Container>
         </Card>
-        <div className="TextHeader">Table</div>
-        <Card
+        {/* <div className="TextHeader">Table</div> */}
+        {/* <Card
           style={{
             width: "80%",
             height: "00%",
@@ -394,7 +394,7 @@ function Home() {
               : <div>LOADING</div>
             }
           </Container>
-        </Card>
+        </Card> */}
         <Footer />
       </div>
     </>

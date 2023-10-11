@@ -44,6 +44,54 @@ const getAllExpenseInYearWithTypesByUserId = async (month, id) => {
     }
 };
 
+// Get METHOD
+const getExpenseByIdAndUserId = async (user_id, expense_id) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/expense`, {
+            params: {
+                userId: user_id,
+                expenseId: expense_id
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียก API');
+        throw error;
+    }
+};
 
-export { createExpenseWithUserId, getAllExpensesInYearByUserId, getAllExpenseInYearWithTypesByUserId };
+// Get METHOD
+const updateExpenseByIdAndUserId = async (user_id, expense_id, data) => {
+    try {
+        const response = await axios.put(`${API_BASE_URL}/expense`, data, {
+            params: {
+                userId: user_id,
+                expenseId: expense_id
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียก API');
+        throw error;
+    }
+};
+
+// Delete METHOD
+const deleteExpenseByIdAndUserId = async (user_id, expense_id) => {
+    try {
+        const response = await axios.delete(`${API_BASE_URL}/expense`, {
+            params: {
+                userId: user_id,
+                expenseId: expense_id
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียก API');
+        throw error;
+    }
+};
+
+
+export { createExpenseWithUserId, getAllExpensesInYearByUserId, getAllExpenseInYearWithTypesByUserId, getExpenseByIdAndUserId, updateExpenseByIdAndUserId, deleteExpenseByIdAndUserId };
 

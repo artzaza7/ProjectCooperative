@@ -1,32 +1,121 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom"; // Import the useLocation hook
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import NavCustom from "../../component/Nav";
 import Footer from "../../component/Footer";
 import { Container, Button, Stack, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+// Import Library
+import jwtDecode from 'jwt-decode';
+
+// Calling API
+import { getIncomeByIdAndUserId, updateIncomeByIdAndUserId } from "../../service/IncomeService"
+import { getExpenseByIdAndUserId, updateExpenseByIdAndUserId } from "../../service/ExpenseService"
+
 function UpdateForm() {
-  const location = useLocation(); // Use the useLocation hook to access the location object
-  const typeName = location.state?.typeName; // Access the typeName prop safely using optional chaining
+  // for Params passing id and type(INCOME, EXPENSE)
+  const { id, type } = useParams();
 
-  const [formData, setFormData] = useState({
-    amountMoney: "",
-    type: "",
-  });
+  // Navigator
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  // const for Dropdown
+  const incomes = ['เงินเดือน', 'งานพิเศษ', 'โบนัส'];
+  const expenses = ['ค่าอาหาร', 'ค่าเดินทาง', 'ค่าที่พัก', 'หนี้', 'ความสุข', 'ค่าของใช้'];
 
-  const handleSubmit = (e) => {
+  // Data for create Income or Expense
+  const [money, setMoney] = useState(0)
+  const initialDropdownValue = type === "INCOME" ? incomes[0] : expenses[0];
+  const [typeDropdown, setTypeDropdown] = useState(initialDropdownValue)
+
+  const incomeDropdown = incomes.map((income, index) => {
+    return <Dropdown.Item key={index} onClick={(e) => setTypeDropdown(income)}>{income}</Dropdown.Item>;
+  })
+
+  const expenseDropdown = expenses.map((expense, index) => {
+    return <Dropdown.Item key={index} onClick={(e) => setTypeDropdown(expense)}>{expense}</Dropdown.Item>;
+  })
+
+  // Loading
+  const [loading, setLoading] = useState(true);
+
+  async function updateSubmit(e) {
     e.preventDefault();
-    // Handle form submission, e.g., send data to a server or perform other actions
-    console.log(formData);
-  };
+
+    // Update Function 
+    // Get token
+    const token = localStorage.getItem('token');
+    if (token) {
+      const user_id = jwtDecode(token).user_id;
+      try{
+        var data = {
+          "money": Number(money),
+          "money_type": typeDropdown
+        }
+        // console.log(data)
+        if(type === "INCOME"){
+          // type === INCOME
+          const responseUpdateIncome = await updateIncomeByIdAndUserId(user_id, id, data)
+          console.log(responseUpdateIncome.message)
+          navigate("/home")
+        }
+        else{
+          // type === EXPENSE
+          const responseUpdateExpense = await updateExpenseByIdAndUserId(user_id, id, data)
+          console.log(responseUpdateExpense.message)
+          navigate("/home")
+        }
+      }
+      catch(error){
+        console.log(error.response.data.message);
+      }
+    }
+    else {
+      // Don't have token
+      console.log("Don't have token");
+      navigate("/");
+    }
+  }
+
+  async function getDataUpdate() {
+    // Get token
+    const token = localStorage.getItem('token');
+    if (token) {
+      const user_id = jwtDecode(token).user_id;
+      try {
+        if (type === "INCOME") {
+          // type === INCOME
+          const responseIncome = await getIncomeByIdAndUserId(user_id, id)
+          const money_type = responseIncome.data.money_type
+          const money = responseIncome.data.money
+          setMoney(money)
+          setTypeDropdown(money_type)
+        }
+        else {
+          // type === EXPENSE
+          const responseExpense = await getExpenseByIdAndUserId(user_id, id)
+          const money_type = responseExpense.data.money_type
+          const money = responseExpense.data.money
+          setMoney(money)
+          setTypeDropdown(money_type)
+        }
+        // finish loading
+        setLoading(false)
+      }
+      catch (error) {
+        console.log(error.response.data.message);
+      }
+    }
+    else {
+      // Don't have token
+      console.log("Don't have token");
+      navigate("/");
+    }
+  }
+
+  useEffect(() => {
+    getDataUpdate()
+  }, [loading])
 
   return (
     <>
@@ -56,7 +145,7 @@ function UpdateForm() {
           alignItems: "center",
         }}
       >
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className="mb-3">
             <label htmlFor="amountMoney" className="form-label">
               Amount Money
@@ -66,22 +155,8 @@ function UpdateForm() {
               className="form-control"
               id="amountMoney"
               name="amountMoney"
-              value={formData.amountMoney}
-              onChange={handleChange}
-              style={{ width: "368px" }}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="amountMoney" className="form-label">
-              Amount Money
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="amountMoney"
-              name="amountMoney"
-              value={formData.amountMoney}
-              onChange={handleChange}
+              value={money}
+              onChange={(e) => setMoney(e.target.value)}
               style={{ width: "368px" }}
             />
           </div>
@@ -95,27 +170,23 @@ function UpdateForm() {
                 id="dropdown-basic"
                 style={{ width: "368px" }}
               >
-                Select Month
+                {typeDropdown}
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ width: "368px" }}>
-                <Dropdown.Item href="#/action-1">Type1</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Type2</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Type3</Dropdown.Item>
+                {type === "INCOME" ? incomeDropdown : expenseDropdown}
               </Dropdown.Menu>
             </Dropdown>
           </div>
           <Stack direction="horizontal" gap={3}>
             <div className="p-2">
-              <Link to="/alltransaction">
-                <Button type="submit" className="btn btn-primary">
-                  Submit
-                </Button>{" "}
-              </Link>
+              <Button type="submit" className="btn btn-primary" onClick={(e) => updateSubmit(e)}>
+                Submit
+              </Button>
             </div>
 
             <div className="p-2 ms-auto">
-              <Link to="/alltransaction">
+              <Link to="/home">
                 <Button type="submit" className="btn btn-danger">
                   Cancel
                 </Button>
