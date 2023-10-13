@@ -2,7 +2,7 @@ import React from "react";
 import './css/Nav.css'
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
-
+import NavDropdown from 'react-bootstrap/NavDropdown';
 function NavCustom() {
     return (
         <nav className="navbar navbar-expand-sm navbar-light ">
@@ -16,17 +16,11 @@ function NavCustom() {
 
             <div className="navbar-collapse collapse w-0 order-3 dual-collapse2">
                 <ul className="navbar-nav ml-auto">
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Profile
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a className="dropdown-item" href="#">Action</a>
-                            <a className="dropdown-item" href="#">Another action</a>
-                            <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
+                    <NavDropdown title="Profile" id="basic-nav-dropdown">
+                        <NavDropdown.Item href="#">LogOut</NavDropdown.Item>
+
+
+                    </NavDropdown>
                 </ul>
             </div>
         </nav>

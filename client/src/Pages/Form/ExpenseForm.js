@@ -1,29 +1,39 @@
 import React, { useState } from "react";
 import NavCustom from "../../component/Nav";
 import Footer from "../../component/Footer";
-import { Container, Button, Stack, Dropdown } from "react-bootstrap";
+import { Container, Button, Stack, Dropdown, Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
-// Import API 
+// Import API
 import { createExpenseWithUserId } from "../../service/ExpenseService";
 
 // Import Library
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 
 function ExpenseForm() {
-
   // Navigator
   const navigate = useNavigate();
 
-  const expenses = ['ค่าอาหาร', 'ค่าเดินทาง', 'ค่าที่พัก', 'หนี้', 'ความสุข', 'ค่าของใช้'];
+  const expenses = [
+    "ค่าอาหาร",
+    "ค่าเดินทาง",
+    "ค่าที่พัก",
+    "หนี้",
+    "ความสุข",
+    "ค่าของใช้",
+  ];
 
   // Data for create Income or Expense
-  const [money, setMoney] = useState(0)
-  const [type, setType] = useState(expenses[0])
+  const [money, setMoney] = useState(0);
+  const [type, setType] = useState(expenses[0]);
 
   const expenseDropdown = expenses.map((expense, index) => {
-    return <Dropdown.Item key={index} onClick={(e) => setType(expense)}>{expense}</Dropdown.Item>;
-  })
+    return (
+      <Dropdown.Item key={index} onClick={(e) => setType(expense)}>
+        {expense}
+      </Dropdown.Item>
+    );
+  });
 
   // function handleSubmitFunction
   async function handleSubmitFunction(e) {
@@ -31,24 +41,23 @@ function ExpenseForm() {
     e.preventDefault();
 
     // Get token
-    const token = localStorage.getItem('token');
-
+    const token = localStorage.getItem("token");
+    handleShow();
     if (token) {
       var data = {
-        "money": money,
-        "money_type": type
-      }
+        money: money,
+        money_type: type,
+      };
       // console.log("Token ", token);
       const user_id = jwtDecode(token).user_id;
       try {
-        const response = await createExpenseWithUserId(user_id, data)
+        const response = await createExpenseWithUserId(user_id, data);
         // Success
         console.log("Create Expense successful : " + response.message);
 
         // Reset Value
         setMoney(0);
         setType(expenses[0]);
-
       } catch (error) {
         console.log(error.response.data.message);
         console.log("Create Expense not successful");
@@ -60,6 +69,10 @@ function ExpenseForm() {
     }
   }
 
+  //Modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
     <>
       <NavCustom />
@@ -123,9 +136,28 @@ function ExpenseForm() {
           </div>
           <Stack direction="horizontal" gap={3}>
             <div className="p-2">
-                <Button type="submit" className="btn btn-primary" onClick={(e) => handleSubmitFunction(e)}>
-                  Submit
-                </Button>
+              <Button
+                className="btn btn-primary"
+                onClick={(e) => handleSubmitFunction(e)}
+              >
+                Submit
+              </Button>
+
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>เพิ่มข้อมูลรายจ่ายสำเร็จ</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  รายจ่าย <br />
+                  จำนวนเงิน: {money} <br />
+                  ประเภท: {type} <br />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="success" onClick={handleClose}>
+                    ตกลง
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
 
             <div className="p-2 ms-auto">

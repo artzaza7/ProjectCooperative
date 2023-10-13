@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import NavCustom from "../../component/Nav";
 import Footer from "../../component/Footer";
-import { Container, Button, Stack, Dropdown } from "react-bootstrap";
+import { Container, Button, Stack, Dropdown, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 // Import Library
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 
 // Calling API
-import { getIncomeByIdAndUserId, updateIncomeByIdAndUserId } from "../../service/IncomeService"
-import { getExpenseByIdAndUserId, updateExpenseByIdAndUserId } from "../../service/ExpenseService"
+import {
+  getIncomeByIdAndUserId,
+  updateIncomeByIdAndUserId,
+} from "../../service/IncomeService";
+import {
+  getExpenseByIdAndUserId,
+  updateExpenseByIdAndUserId,
+} from "../../service/ExpenseService";
 
 function UpdateForm() {
   // for Params passing id and type(INCOME, EXPENSE)
@@ -20,57 +26,77 @@ function UpdateForm() {
   const navigate = useNavigate();
 
   // const for Dropdown
-  const incomes = ['เงินเดือน', 'งานพิเศษ', 'โบนัส'];
-  const expenses = ['ค่าอาหาร', 'ค่าเดินทาง', 'ค่าที่พัก', 'หนี้', 'ความสุข', 'ค่าของใช้'];
+  const incomes = ["เงินเดือน", "งานพิเศษ", "โบนัส"];
+  const expenses = [
+    "ค่าอาหาร",
+    "ค่าเดินทาง",
+    "ค่าที่พัก",
+    "หนี้",
+    "ความสุข",
+    "ค่าของใช้",
+  ];
 
   // Data for create Income or Expense
-  const [money, setMoney] = useState(0)
+  const [money, setMoney] = useState(0);
   const initialDropdownValue = type === "INCOME" ? incomes[0] : expenses[0];
-  const [typeDropdown, setTypeDropdown] = useState(initialDropdownValue)
+  const [typeDropdown, setTypeDropdown] = useState(initialDropdownValue);
 
   const incomeDropdown = incomes.map((income, index) => {
-    return <Dropdown.Item key={index} onClick={(e) => setTypeDropdown(income)}>{income}</Dropdown.Item>;
-  })
+    return (
+      <Dropdown.Item key={index} onClick={(e) => setTypeDropdown(income)}>
+        {income}
+      </Dropdown.Item>
+    );
+  });
 
   const expenseDropdown = expenses.map((expense, index) => {
-    return <Dropdown.Item key={index} onClick={(e) => setTypeDropdown(expense)}>{expense}</Dropdown.Item>;
-  })
+    return (
+      <Dropdown.Item key={index} onClick={(e) => setTypeDropdown(expense)}>
+        {expense}
+      </Dropdown.Item>
+    );
+  });
 
   // Loading
   const [loading, setLoading] = useState(true);
 
   async function updateSubmit(e) {
     e.preventDefault();
-
-    // Update Function 
+    handleShow();
+    // Update Function
     // Get token
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       const user_id = jwtDecode(token).user_id;
-      try{
+      try {
         var data = {
-          "money": Number(money),
-          "money_type": typeDropdown
-        }
+          money: Number(money),
+          money_type: typeDropdown,
+        };
         // console.log(data)
-        if(type === "INCOME"){
+        if (type === "INCOME") {
           // type === INCOME
-          const responseUpdateIncome = await updateIncomeByIdAndUserId(user_id, id, data)
-          console.log(responseUpdateIncome.message)
-          navigate("/home")
-        }
-        else{
+          const responseUpdateIncome = await updateIncomeByIdAndUserId(
+            user_id,
+            id,
+            data
+          );
+          console.log(responseUpdateIncome.message);
+          navigate("/home");
+        } else {
           // type === EXPENSE
-          const responseUpdateExpense = await updateExpenseByIdAndUserId(user_id, id, data)
-          console.log(responseUpdateExpense.message)
-          navigate("/home")
+          const responseUpdateExpense = await updateExpenseByIdAndUserId(
+            user_id,
+            id,
+            data
+          );
+          console.log(responseUpdateExpense.message);
+          navigate("/home");
         }
-      }
-      catch(error){
+      } catch (error) {
         console.log(error.response.data.message);
       }
-    }
-    else {
+    } else {
       // Don't have token
       console.log("Don't have token");
       navigate("/");
@@ -79,34 +105,31 @@ function UpdateForm() {
 
   async function getDataUpdate() {
     // Get token
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       const user_id = jwtDecode(token).user_id;
       try {
         if (type === "INCOME") {
           // type === INCOME
-          const responseIncome = await getIncomeByIdAndUserId(user_id, id)
-          const money_type = responseIncome.data.money_type
-          const money = responseIncome.data.money
-          setMoney(money)
-          setTypeDropdown(money_type)
-        }
-        else {
+          const responseIncome = await getIncomeByIdAndUserId(user_id, id);
+          const money_type = responseIncome.data.money_type;
+          const money = responseIncome.data.money;
+          setMoney(money);
+          setTypeDropdown(money_type);
+        } else {
           // type === EXPENSE
-          const responseExpense = await getExpenseByIdAndUserId(user_id, id)
-          const money_type = responseExpense.data.money_type
-          const money = responseExpense.data.money
-          setMoney(money)
-          setTypeDropdown(money_type)
+          const responseExpense = await getExpenseByIdAndUserId(user_id, id);
+          const money_type = responseExpense.data.money_type;
+          const money = responseExpense.data.money;
+          setMoney(money);
+          setTypeDropdown(money_type);
         }
         // finish loading
-        setLoading(false)
-      }
-      catch (error) {
+        setLoading(false);
+      } catch (error) {
         console.log(error.response.data.message);
       }
-    }
-    else {
+    } else {
       // Don't have token
       console.log("Don't have token");
       navigate("/");
@@ -114,9 +137,13 @@ function UpdateForm() {
   }
 
   useEffect(() => {
-    getDataUpdate()
-  }, [loading])
+    getDataUpdate();
+  }, [loading]);
 
+  //Modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
     <>
       <NavCustom />
@@ -180,9 +207,25 @@ function UpdateForm() {
           </div>
           <Stack direction="horizontal" gap={3}>
             <div className="p-2">
-              <Button type="submit" className="btn btn-primary" onClick={(e) => updateSubmit(e)}>
+              <Button className="btn btn-primary" onClick={handleShow}>
                 Submit
               </Button>
+
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>เพิ่มข้อมูลรายรับสำเร็จ</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  รายรับ <br />
+                  จำนวนเงิน: {money} <br />
+                  ประเภท: {type} <br />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="success" onClick={(e) => updateSubmit(e)}>
+                    ตกลง
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
 
             <div className="p-2 ms-auto">

@@ -24,6 +24,10 @@ const DatatablePage = (props) => {
 
     const handleClose = () => setShow(false);
 
+    async function refreshPage() {
+        window.location.reload(false);
+    }
+
     async function deleteSubmit() {
         const token = localStorage.getItem("token")
         if (token) {
@@ -37,8 +41,9 @@ const DatatablePage = (props) => {
                     const responseDeleteExpense = await deleteExpenseByIdAndUserId(user_id, modalId)
                     console.log(responseDeleteExpense.message)
                 }
-                setShow(false)
-                navigate("/home")
+                setShow(false);
+                navigate("/alltransaction");
+                refreshPage(); // call the function to refresh the page
             }
             catch (error) {
                 console.log(error.message)
@@ -48,9 +53,7 @@ const DatatablePage = (props) => {
             console.log("Don't have token")
             navigate("/")
         }
-
     }
-
     function handleShow(id, type, money, moneyType) {
         setModalId(id)
         setModalType(type)
@@ -293,12 +296,12 @@ const DatatablePage = (props) => {
                 <Modal.Header closeButton>
                     <Modal.Title>ถามอีกครั้งสำหรับการลบข้อมูล</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>ID : {modalId} ({modalType}) | ประเภท {modalMoneyType}, {modalMoney} บาท</Modal.Body>
+                <Modal.Body>ID : {modalId} ({modalType}) <br /> ประเภท : {modalMoneyType}<br />จำนวนเงิน : {modalMoney} บาท</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         ปิด
                     </Button>
-                    <Button variant="danger" onClick={deleteSubmit}>
+                    <Button variant="danger" onClick={deleteSubmit} >
                         ลบข้อมูล
                     </Button>
                 </Modal.Footer>

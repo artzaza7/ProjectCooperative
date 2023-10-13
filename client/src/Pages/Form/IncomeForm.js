@@ -1,29 +1,33 @@
 import React, { useState } from "react";
 import NavCustom from "../../component/Nav";
 import Footer from "../../component/Footer";
-import { Container, Button, Stack, Dropdown } from "react-bootstrap";
+import { Container, Button, Stack, Dropdown, Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
-// Import API 
+// Import API
 import { createIncomeWithUserId } from "../../service/IncomeService";
 
 // Import Library
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 
 function IncomeForm() {
   // Navigator
   const navigate = useNavigate();
 
   // const for Dropdown
-  const incomes = ['เงินเดือน', 'งานพิเศษ', 'โบนัส'];
+  const incomes = ["เงินเดือน", "งานพิเศษ", "โบนัส"];
 
   const incomeDropdown = incomes.map((income, index) => {
-    return <Dropdown.Item key={index} onClick={(e) => setType(income)}>{income}</Dropdown.Item>;
-  })
+    return (
+      <Dropdown.Item key={index} onClick={(e) => setType(income)}>
+        {income}
+      </Dropdown.Item>
+    );
+  });
 
   // Data for create Income or Expense
-  const [money, setMoney] = useState(0)
-  const [type, setType] = useState(incomes[0])
+  const [money, setMoney] = useState(0);
+  const [type, setType] = useState(incomes[0]);
 
   // function handleSubmitFunction
   async function handleSubmitFunction(e) {
@@ -31,24 +35,23 @@ function IncomeForm() {
     e.preventDefault();
 
     // Get token
-    const token = localStorage.getItem('token');
-
+    const token = localStorage.getItem("token");
+    handleShow();
     if (token) {
       var data = {
-        "money": money,
-        "money_type": type
-      }
+        money: money,
+        money_type: type,
+      };
       // console.log("Token ", token);
       const user_id = jwtDecode(token).user_id;
       try {
-        const response = await createIncomeWithUserId(user_id, data)
+        const response = await createIncomeWithUserId(user_id, data);
         // Success
         console.log("Create Income successful : " + response.message);
-        
+
         // Reset Value
         setMoney(0);
         setType(incomes[0]);
-
       } catch (error) {
         console.log(error.response.data.message);
         console.log("Create Income not successful");
@@ -59,6 +62,11 @@ function IncomeForm() {
       navigate("/");
     }
   }
+
+  //Modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
@@ -78,8 +86,7 @@ function IncomeForm() {
           alignItems: "center",
         }}
         className="TextHeader"
-      >
-      </div>
+      ></div>
       <Container
         style={{
           display: "flex",
@@ -121,9 +128,28 @@ function IncomeForm() {
           </div>
           <Stack direction="horizontal" gap={3}>
             <div className="p-2">
-              <Button type="submit" className="btn btn-primary" onClick={(e) => handleSubmitFunction(e)}>
+              <Button
+                className="btn btn-primary"
+                onClick={(e) => handleSubmitFunction(e)}
+              >
                 Submit
               </Button>
+
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>เพิ่มข้อมูลรายรับสำเร็จ</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  รายรับ <br />
+                  จำนวนเงิน: {money} <br />
+                  ประเภท: {type} <br />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="success" onClick={handleClose}>
+                    ตกลง
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
 
             <div className="p-2 ms-auto">

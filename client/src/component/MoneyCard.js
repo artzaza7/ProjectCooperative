@@ -7,12 +7,9 @@ function MoneyCardBlue(props) {
       <Card className="custom-card">
         <Card.Body>
           <Card.Title>
-            <Row>
-              <Col md={6}> </Col>
-              <Col md={6}>^10%</Col>
-            </Row>
+            <Card.Title>{props.cardText}</Card.Title>
           </Card.Title>
-          <Card.Footer className="MoneyText">{props.amountMoney}</Card.Footer>
+          <Card.Footer className="MoneyText">{props.amountMoney} ฿</Card.Footer>
           <Card.Text className="CardText">{props.cardText}</Card.Text>
         </Card.Body>
       </Card>
@@ -30,13 +27,8 @@ function MoneyCardRed(props) {
         }}
       >
         <Card.Body>
-          <Card.Title>
-            <Row>
-              <Col md={6}> </Col>
-              <Col md={6}>^10%</Col>
-            </Row>
-          </Card.Title>
-          <Card.Footer className="MoneyText">{props.amountMoney}</Card.Footer>
+          <Card.Title>{props.cardText}</Card.Title>
+          <Card.Footer className="MoneyText">{props.amountMoney} ฿</Card.Footer>
           <Card.Text className="CardText">{props.cardText}</Card.Text>
         </Card.Body>
       </Card>
@@ -55,12 +47,9 @@ function MoneyCardGreen(props) {
       >
         <Card.Body>
           <Card.Title>
-            <Row>
-              <Col md={6}> </Col>
-              <Col md={6}>^10%</Col>
-            </Row>
+            <Card.Title>{props.cardText}</Card.Title>
           </Card.Title>
-          <Card.Footer className="MoneyText">{props.amountMoney}</Card.Footer>
+          <Card.Footer className="MoneyText">{props.amountMoney} ฿</Card.Footer>
           <Card.Text className="CardText">{props.cardText}</Card.Text>
         </Card.Body>
       </Card>
