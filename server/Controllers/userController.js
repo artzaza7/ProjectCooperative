@@ -377,11 +377,13 @@ async function getIncAndExpByMonth(req,res){
     let inc = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
     const income = user.Income
     for(let i=0;i<income.length;i++){
-        for(let j=0;j<inc_type.length;j++){
-            if(!income[i].money_type.localeCompare(inc_type[j])){
-                for(let k=0;k<inc[j].length;k++){
-                    if(income[i].createDate.getDay()==k){
-                        inc[j][k] += income[i].money
+        if(income[i].createDate.getMonth()==month){
+            for(let j=0;j<inc_type.length;j++){
+                if(!income[i].money_type.localeCompare(inc_type[j])){
+                    for(let k=0;k<inc[j].length;k++){
+                        if(income[i].createDate.getDay()==k){
+                            inc[j][k] += income[i].money
+                        }
                     }
                 }
             }
@@ -390,11 +392,13 @@ async function getIncAndExpByMonth(req,res){
     let exp = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
     const expense = user.Expense
     for(let i=0;i<expense.length;i++){
-        for(let j=0;j<exp_type.length;j++){
-            if(!expense[i].money_type.localeCompare(exp_type[j])){
-                for(let k=0;k<exp[j].length;k++){
-                    if(expense[i].createDate.getDay()==k){
-                        exp[j][k] += expense[i].money
+        if(expense[i].createDate.getMonth()==month){
+            for(let j=0;j<exp_type.length;j++){
+                if(!expense[i].money_type.localeCompare(exp_type[j])){
+                    for(let k=0;k<exp[j].length;k++){
+                        if(expense[i].createDate.getDay()==k){
+                            exp[j][k] += expense[i].money
+                        }
                     }
                 }
             }
