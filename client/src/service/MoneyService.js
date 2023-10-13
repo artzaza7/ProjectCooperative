@@ -13,5 +13,21 @@ const getMoneyByUserId = async (id) => {
     }
 };
 
-export { getMoneyByUserId };
+// GET METHOD
+const getStackGraph = async (id, month) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/alltype/${month}`, {
+            params:{
+                month: month,
+                id: id
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียก API');
+        throw error;
+    }
+};
+
+export { getMoneyByUserId, getStackGraph };
 

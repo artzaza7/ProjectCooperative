@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 // Adding API
 import { getAllIncomesInYearByUserId, getAllIncomesInYearWithTypesByUserId } from '../service/IncomeService'
 import { getAllExpensesInYearByUserId, getAllExpenseInYearWithTypesByUserId } from "../service/ExpenseService"
-import { getMoneyByUserId } from "../service/MoneyService"
+import { getMoneyByUserId, getStackGraph } from "../service/MoneyService"
 
 // Import Library
 import jwtDecode from 'jwt-decode';
@@ -38,6 +38,9 @@ class Money {
 }
 
 function Home() {
+  // nested array for week stack graph
+  const [nestedArray, setNestedArray] = useState([])
+
   // สร้างอาร์เรย์ของเงิน (Money objects)
   const [monies, setMonies] = useState([])
   const [loadingMoney, setLoadingMoney] = useState(true)
@@ -92,6 +95,26 @@ function Home() {
       const user_id = jwtDecode(token).user_id;
       try {
         setLoadingArray(true);
+
+        const responseStackGraph = await getStackGraph(user_id, month_value);
+        console.log(responseStackGraph)
+        const stackIncome = responseStackGraph.data.income
+        const stackExpense = responseStackGraph.data.expense
+
+        const stackResult = []
+        stackResult.push(stackIncome["งานพิเศษ"])
+        stackResult.push(stackIncome["เงินเดือน"])
+        stackResult.push(stackIncome["โบนัส"])
+
+        stackResult.push(stackExpense["ความสุข"])
+        stackResult.push(stackExpense["ค่าของใช้"])
+        stackResult.push(stackExpense["ค่าที่พัก"])
+        stackResult.push(stackExpense["ค่าอาหาร"])
+        stackResult.push(stackExpense["ค่าเดินทาง"])
+        stackResult.push(stackExpense["หนี้"])
+        
+        // console.log(stackResult)
+        setNestedArray(stackResult)
 
         const responseIncomeMonth = await getAllIncomesInYearWithTypesByUserId(month_value, user_id)
         const responseExpenseMonth = await getAllExpenseInYearWithTypesByUserId(month_value, user_id)
@@ -206,10 +229,29 @@ function Home() {
     // Get 
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจาก getMonth() คืนค่าเดือนเริ่มต้นที่ 0
-
     if (token) {
       const user_id = jwtDecode(token).user_id;
       try {
+        const responseStackGraph = await getStackGraph(user_id, currentMonth);
+        // console.log(responseStackGraph)
+        const stackIncome = responseStackGraph.data.income
+        const stackExpense = responseStackGraph.data.expense
+
+        const stackResult = []
+        stackResult.push(stackIncome["งานพิเศษ"])
+        stackResult.push(stackIncome["เงินเดือน"])
+        stackResult.push(stackIncome["โบนัส"])
+
+        stackResult.push(stackExpense["ความสุข"])
+        stackResult.push(stackExpense["ค่าของใช้"])
+        stackResult.push(stackExpense["ค่าที่พัก"])
+        stackResult.push(stackExpense["ค่าอาหาร"])
+        stackResult.push(stackExpense["ค่าเดินทาง"])
+        stackResult.push(stackExpense["หนี้"])
+        
+        // console.log(stackResult)
+        setNestedArray(stackResult)
+
         const responseIncome = await getAllIncomesInYearByUserId(user_id);
         const newIncome = responseIncome.data[0].summary;
         // Update incomeYear
@@ -377,7 +419,7 @@ function Home() {
           className="mx-auto text-center"
         >
           <Container fluid style={{ backgroundColor: "whitesmoke" }}>
-            <BarChartWeek />
+            {!loadingArray ? <BarChartWeek nestedArray={nestedArray}/> : <div>LOADING</div>}
           </Container>
         </Card>
         {/* <div className="TextHeader">Table</div> */}

@@ -7,7 +7,11 @@ Chart.register(CategoryScale);
 Chart.register(LinearScale);
 Chart.register(BarElement);
 
-const BarChartWeek = () => {
+function BarChartWeek(props) {
+    const { nestedArray } = props
+
+    // console.log("nestedArray : ", nestedArray)
+
     const [data] = useState({
         options: {
             legend: {
@@ -23,27 +27,77 @@ const BarChartWeek = () => {
                 }
             }
         },
-        labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+        labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         datasets: [
+            // Stack 0 : Income, 1 : Expense
             {
-                label: 'Income',
-                backgroundColor: 'rgba(194, 116, 161, 0.5)',
-                borderColor: 'rgb(194, 116, 161)',
-                data: [65, 59, 90, 81, 56, 55, 40],
-
+                label: 'งานพิเศษ',
+                backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                borderColor: 'rgb(255, 0, 0)',
+                data: nestedArray[0],
+                stack: 'Stack 0',
             },
             {
-                label: 'Expense',
-                backgroundColor: 'rgba(71, 225, 167, 0.5)',
-                borderColor: 'rgb(71, 225, 167)',
-                data: [28, 48, 40, 19, 96, 27, 100],
+                label: 'เงินเดือน',
+                backgroundColor: 'rgba(0, 0, 255, 0.5)',
+                borderColor: 'rgb(0, 0, 255)',
+                data: nestedArray[1],
+                stack: 'Stack 0',
             },
+            {
+                label: 'โบนัส',
+                backgroundColor: 'rgba(255, 255, 0, 0.5)',
+                borderColor: 'rgb(255, 255, 0)',
+                data: nestedArray[2],
+                stack: 'Stack 0',
+            },
+            {
+                label: 'ความสุข',
+                backgroundColor: 'rgba(0, 255, 255, 0.5)',
+                borderColor: 'rgb(0, 255, 255)',
+                data: nestedArray[3],
+                stack: 'Stack 1',
+            },
+            {
+                label: 'ค่าของใช้',
+                backgroundColor: 'rgba(128, 128, 128, 0.5)',
+                borderColor: 'rgb(128, 128, 128)',
+                data: nestedArray[4],
+                stack: 'Stack 1',
+            },
+            {
+                label: 'ค่าที่พัก',
+                backgroundColor: 'rgba(255, 128, 0, 0.5)',
+                borderColor: 'rgb(255, 128, 0)',
+                data: nestedArray[5],
+                stack: 'Stack 1',
+            },
+            {
+                label: 'ค่าอาหาร',
+                backgroundColor: 'rgba(0, 128, 255, 0.5)',
+                borderColor: 'rgb(0, 128, 255)',
+                data: nestedArray[6],
+                stack: 'Stack 1',
+            },
+            {
+                label: 'ค่าเดินทาง',
+                backgroundColor: 'rgba(128, 0, 255, 0.5)',
+                borderColor: 'rgb(128, 0, 255)',
+                data: nestedArray[7],
+                stack: 'Stack 1',
+            },
+            {
+                label: 'หนี้',
+                backgroundColor: 'rgba(192, 192, 192, 0.5)',
+                borderColor: 'rgb(192, 192, 192)',
+                data: nestedArray[8],
+                stack: 'Stack 1',
+            }
         ],
     });
 
     return (
         <CDBContainer>
-
             <div className="Chartlable" >Financial of Week</div>
             <Bar data={data} options={{ responsive: true }} />
         </CDBContainer>

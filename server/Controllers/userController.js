@@ -244,7 +244,7 @@ async function incomeYearSum(req,res){
         sum += sumMonth[i]
     }
     console.log(sumMonth)
-    console.log(typeof(income[0].money))
+    // console.log(typeof(income[0].money))
     res.json({
         "message": "process complete",
         "data": [{
