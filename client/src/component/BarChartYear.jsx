@@ -9,7 +9,7 @@ import { getAllExpensesInYearByUserId } from '../service/ExpenseService'
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { CDBContainer } from 'cdbreact';
-import { CategoryScale, BarElement, LinearScale, Chart, Legend, Tooltip} from "chart.js";
+import { CategoryScale, BarElement, LinearScale, Chart, Legend, Tooltip } from "chart.js";
 import { useNavigate } from "react-router-dom";
 Chart.register(CategoryScale);
 Chart.register(LinearScale);

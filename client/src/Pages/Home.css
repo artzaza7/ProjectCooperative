@@ -1,8 +1,11 @@
-.Container {
+.Kanit {
+  font-family: "Kanit";
+  color: aqua;
 }
 
 .TextHeader {
   /* color: #ffc107; */
+  font-family: "Kanit";
   color: black;
   font-size: 36px;
   font-style: normal;
@@ -17,6 +20,7 @@
 }
 .TextName {
   /* color: #ffc107; */
+  font-family: "Kanit";
   color: white;
   font-size: 300%;
   font-style: normal;

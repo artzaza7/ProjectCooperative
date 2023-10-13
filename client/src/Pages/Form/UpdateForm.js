@@ -155,92 +155,138 @@ function UpdateForm() {
           alignItems: "center",
         }}
       />{" "}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        className="TextHeader"
-      >
-        UpdateForm
-      </div>
-      <Container
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <form>
-          <div className="mb-3">
-            <label htmlFor="amountMoney" className="form-label">
-              Amount Money
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="amountMoney"
-              name="amountMoney"
-              value={money}
-              onChange={(e) => setMoney(e.target.value)}
-              style={{ width: "368px" }}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="type" className="form-label">
-              Type
-            </label>
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="warning"
-                id="dropdown-basic"
-                style={{ width: "368px" }}
+      <font>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          className="TextHeader"
+        >
+          UpdateForm
+        </div>
+        <Container
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <form>
+            <div className="mb-3">
+              <label
+                htmlFor="amountMoney"
+                className="form-label"
+                style={{
+                  height: "3rem",
+                  fontSize: "1.5rem",
+                }}
               >
-                {typeDropdown}
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu style={{ width: "368px" }}>
-                {type === "INCOME" ? incomeDropdown : expenseDropdown}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-          <Stack direction="horizontal" gap={3}>
-            <div className="p-2">
-              <Button className="btn btn-primary" onClick={handleShow}>
-                Submit
-              </Button>
-
-              <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>เพิ่มข้อมูลรายรับสำเร็จ</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  รายรับ <br />
-                  จำนวนเงิน: {money} <br />
-                  ประเภท: {type} <br />
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="success" onClick={(e) => updateSubmit(e)}>
-                    ตกลง
-                  </Button>
-                </Modal.Footer>
-              </Modal>
+                Amount Money
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="amountMoney"
+                name="amountMoney"
+                value={money}
+                onChange={(e) => setMoney(e.target.value)}
+                style={{
+                  width: "368px",
+                  height: "3rem",
+                  fontSize: "1.3rem",
+                }}
+              />
             </div>
+            <div className="mb-3">
+              <label
+                htmlFor="type"
+                className="form-label"
+                style={{
+                  height: "3rem",
+                  fontSize: "1.5rem",
+                }}
+              >
+                Type
+              </label>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="warning"
+                  id="dropdown-basic"
+                  style={{ width: "368px", height: "3rem", fontSize: "1.3rem" }}
+                >
+                  {typeDropdown}
+                </Dropdown.Toggle>
 
-            <div className="p-2 ms-auto">
-              <Link to="/home">
-                <Button type="submit" className="btn btn-danger">
-                  Cancel
+                <Dropdown.Menu style={{ width: "368px" }}>
+                  {type === "INCOME" ? incomeDropdown : expenseDropdown}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+            <Stack direction="horizontal" gap={3}>
+              <div className="p-2">
+                <Button
+                  className="btn btn-primary"
+                  onClick={handleShow}
+                  style={{
+                    width: "6rem",
+                    height: "3rem",
+                    fontSize: "1.3rem",
+                  }}
+                >
+                  Submit
                 </Button>
-              </Link>
-            </div>
-          </Stack>
-        </form>
-      </Container>
-      <div className="mt-auto">
-        <Footer />
-      </div>
+
+                <Modal show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>เพิ่มข้อมูลรายรับสำเร็จ</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    รายรับ <br />
+                    จำนวนเงิน: {money} <br />
+                    ประเภท: {type} <br />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="success" onClick={(e) => updateSubmit(e)}>
+                      ตกลง
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </div>
+
+              <div className="p-2 ms-auto">
+                <Link to="/home">
+                  <Button
+                    type="submit"
+                    className="btn btn-danger"
+                    style={{
+                      width: "6rem",
+                      height: "3rem",
+                      fontSize: "1.3rem",
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Link>
+              </div>
+            </Stack>
+          </form>
+        </Container>
+        <div
+          className="mt-auto"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end", // Adjusted to align at the bottom
+            position: "fixed",
+            width: "100%",
+            bottom: "0",
+          }}
+        >
+          <Footer />
+        </div>
+      </font>
     </>
   );
 }

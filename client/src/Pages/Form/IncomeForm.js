@@ -79,90 +79,136 @@ function IncomeForm() {
           alignItems: "center",
         }}
       />{" "}
+      <font>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          className="TextHeader"
+        >
+          Income
+        </div>
+        <Container
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <form>
+            <div className="mb-3">
+              <label
+                htmlFor="amountMoney"
+                className="form-label"
+                style={{
+                  height: "3rem",
+                  fontSize: "1.5rem",
+                }}
+              >
+                Amount Money
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="amountMoney"
+                name="amountMoney"
+                value={money}
+                style={{ width: "368px", fontSize: "1.5rem" }}
+                onChange={(e) => setMoney(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label
+                htmlFor="type"
+                className="form-label"
+                style={{
+                  height: "3rem",
+                  fontSize: "1.5rem",
+                }}
+              >
+                Type
+              </label>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="warning"
+                  id="dropdown-basic"
+                  style={{
+                    width: "368px",
+                    height: "3rem",
+                    fontSize: "1.3rem",
+                  }}
+                  className="Kanit"
+                >
+                  {type}
+                </Dropdown.Toggle>
+                <Dropdown.Menu style={{ width: "368px" }}>
+                  {incomeDropdown}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+            <Stack direction="horizontal" gap={3}>
+              <div className="p-2">
+                <Button
+                  className="btn btn-primary"
+                  onClick={(e) => handleSubmitFunction(e)}
+                  style={{
+                    width: "150px",
+                    height: "3rem",
+                    fontSize: "1.3rem",
+                  }}
+                >
+                  Submit
+                </Button>
+
+                <Modal show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>เพิ่มข้อมูลรายรับสำเร็จ</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    รายรับ <br />
+                    จำนวนเงิน: {money} <br />
+                    ประเภท: {type} <br />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="success" onClick={handleClose}>
+                      ตกลง
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </div>
+
+              <div className="p-2 ms-auto">
+                <Link to="/alltransaction">
+                  <Button
+                    type="submit"
+                    className="btn btn-danger"
+                    style={{
+                      width: "150px",
+                      height: "3rem",
+                      fontSize: "1.3rem",
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Link>
+              </div>
+            </Stack>
+          </form>
+        </Container>
+      </font>
       <div
+        className="mt-auto"
         style={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-        }}
-        className="TextHeader"
-      ></div>
-      <Container
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          alignItems: "flex-end", // Adjusted to align at the bottom
+          position: "fixed",
+          width: "100%",
+          bottom: "0",
         }}
       >
-        <form>
-          <div className="mb-3">
-            <label htmlFor="amountMoney" className="form-label">
-              Amount Money
-            </label>
-            <input
-              type="number"
-              className="form-control"
-              id="amountMoney"
-              name="amountMoney"
-              value={money}
-              style={{ width: "368px" }}
-              onChange={(e) => setMoney(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="type" className="form-label">
-              Type
-            </label>
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="warning"
-                id="dropdown-basic"
-                style={{ width: "368px" }}
-              >
-                {type}
-              </Dropdown.Toggle>
-              <Dropdown.Menu style={{ width: "368px" }}>
-                {incomeDropdown}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-          <Stack direction="horizontal" gap={3}>
-            <div className="p-2">
-              <Button
-                className="btn btn-primary"
-                onClick={(e) => handleSubmitFunction(e)}
-              >
-                Submit
-              </Button>
-
-              <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>เพิ่มข้อมูลรายรับสำเร็จ</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  รายรับ <br />
-                  จำนวนเงิน: {money} <br />
-                  ประเภท: {type} <br />
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="success" onClick={handleClose}>
-                    ตกลง
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </div>
-
-            <div className="p-2 ms-auto">
-              <Link to="/alltransaction">
-                <Button type="submit" className="btn btn-danger">
-                  Cancel
-                </Button>
-              </Link>
-            </div>
-          </Stack>
-        </form>
-      </Container>
-      <div className="mt-auto">
         <Footer />
       </div>
     </>

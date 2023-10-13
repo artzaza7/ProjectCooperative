@@ -133,11 +133,23 @@ const DatatablePage = (props) => {
                         state: { typeName: "Update" },
                     }}
                 >
-                    <Button variant="warning" style={{ marginRight: "1rem" }}>
+                    <Button variant="warning" style={{
+
+                        width: "6rem",
+                        height: "3rem",
+                        fontSize: "1.3rem",
+                    }}>
                         Update
                     </Button>
                 </Link>,
-                delete: <button className='btn btn-danger' onClick={() => handleShow(monies[i].id, monies[i].type, monies[i].money, monies[i].money_type)}>Delete</button>,
+                delete: <button className='btn btn-danger' onClick={() => handleShow(monies[i].id, monies[i].type, monies[i].money, monies[i].money_type)}
+                    style={{
+
+                        width: "5rem",
+                        height: "3rem",
+                        fontSize: "1.3rem",
+                    }}
+                >Delete</button>,
             }
             rowData.push(fixData)
         }

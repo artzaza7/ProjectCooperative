@@ -12,6 +12,7 @@ nav {
 }
 
 nav a {
+  font-family: "Kanit";
   color: aliceblue;
   text-decoration: none;
   margin: 0 1rem;
@@ -22,6 +23,7 @@ nav a {
 }
 
 .Chartlable {
+  font-family: "Kanit";
   font-size: 26px;
   color: #ffc107;
   font-style: normal;
@@ -36,6 +38,7 @@ nav a {
 
 .HeaderChart {
   /* color: #ffc107; */
+  font-family: "Kanit";
   font-size: 36px;
   font-style: normal;
   font-weight: 500;
@@ -45,4 +48,8 @@ nav a {
   align-items: center;
   margin-top: 45px;
   margin-bottom: 25px;
+}
+
+font {
+  font-family: "Kanit";
 }

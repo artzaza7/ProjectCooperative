@@ -14,6 +14,8 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import IncomeForm from "./Pages/Form/IncomeForm";
 import ExpenseForm from "./Pages/Form/ExpenseForm";
 import UpdateForm from "./Pages/Form/UpdateForm";
+import "./font/Kanit-Light.ttf";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
