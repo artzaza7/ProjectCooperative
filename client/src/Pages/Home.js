@@ -345,13 +345,14 @@ function Home() {
             <div className="TextName">Self Finance Management</div>
           </div>
           <div className="TextHeader">Year</div>
+
           <Card
             style={{
               width: "80%",
-              height: "00%",
+              height: "80%",
               marginBottom: "40px",
             }}
-            className="mx-auto text-center"
+            className="mx-auto"
           >
             <Container fluid style={{ backgroundColor: "whitesmoke" }}>
               <BarChartYear />
@@ -388,12 +389,11 @@ function Home() {
             </Col>
           </Row>
           <Row className="BgBox">
-            <Col md={1} className=""></Col>
             <Col
-              md={5}
+              md={6}
               className="d-flex flex-column justify-content-center align-items-center"
             >
-              <div style={{ padding: "20px", width: "70%" }}>
+              <div style={{ width: "70%" }}>
                 {!loadingArray ? (
                   <PieChart
                     chartName={"Income"}
@@ -404,27 +404,13 @@ function Home() {
                   <></>
                 )}
               </div>
-              {/* <Row style={{ gap: "0.3rem" }}>
-              <MoneyCardBlue
-                amountMoney={"500 Bath"}
-                cardText={"Total Income"}
-              />
-              <MoneyCardRed
-                amountMoney={"500 Bath"}
-                cardText={"Total Expense"}
-              />
-              <MoneyCardGreen
-                amountMoney={"500 Bath"}
-                cardText={"Total Summary"}
-              />
-            </Row> */}
             </Col>
 
             <Col
-              md={5}
+              md={6}
               className="d-flex flex-column justify-content-center align-items-center"
             >
-              <div style={{ padding: "20px", width: "70%" }}>
+              <div style={{ width: "70%" }}>
                 {!loadingArray ? (
                   <PieChart
                     chartName={"Expense"}
@@ -435,20 +421,7 @@ function Home() {
                   <></>
                 )}
               </div>
-              {/* <Row style={{ gap: "0.5rem" }}>
-              <MoneyCardBlue
-                amountMoney={"500 Bath"}
-                cardText={"Total Income"}
-              />
-              <MoneyCardRed
-                amountMoney={"500 Bath"}
-                cardText={"Total Expense"}
-              />
-              <MoneyCardGreen
-                amountMoney={"500 Bath"}
-                cardText={"Total Summary"}
-              />
-            </Row>{" "} */}
+
               <Col md={1} className=""></Col>
             </Col>
 

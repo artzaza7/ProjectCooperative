@@ -106,7 +106,10 @@ function AllTranscation() {
             justifyContent: "center",
             alignItems: "center",
           }}
-        ></div>
+        >
+          {" "}
+          <div className="TextName">All Transaction</div>
+        </div>
         <div
           style={{
             marginTop: "1rem",

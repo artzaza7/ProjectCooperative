@@ -46,8 +46,8 @@ nav a {
   display: flex;
   /* Horizontal centering */
   align-items: center;
-  margin-top: 45px;
-  margin-bottom: 25px;
+  margin-top: 25px;
+  margin-bottom: 0px;
 }
 
 font {

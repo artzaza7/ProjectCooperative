@@ -139,7 +139,6 @@ function IncomeForm() {
                     height: "3rem",
                     fontSize: "1.3rem",
                   }}
-                  className="Kanit"
                 >
                   {type}
                 </Dropdown.Toggle>
