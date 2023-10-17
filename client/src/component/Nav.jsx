@@ -3,7 +3,18 @@ import './css/Nav.css'
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useNavigate } from "react-router-dom";
+
 function NavCustom() {
+    // Navigator
+    const navigate = useNavigate();
+
+    function handleLogOut() {
+        console.log("LOGOUT")
+        localStorage.removeItem("token")
+        navigate("/")
+    }
+
     return (
         <nav className="navbar navbar-expand-sm navbar-light ">
             <div className="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
@@ -17,9 +28,7 @@ function NavCustom() {
             <div className="navbar-collapse collapse w-0 order-3 dual-collapse2" style={{ fontSize: "1.3rem" }}>
                 <ul className="navbar-nav ml-auto">
                     <NavDropdown title="Profile" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#">LogOut</NavDropdown.Item>
-
-
+                        <NavDropdown.Item href="#" onClick={handleLogOut}>LogOut</NavDropdown.Item>
                     </NavDropdown>
                 </ul>
             </div>
