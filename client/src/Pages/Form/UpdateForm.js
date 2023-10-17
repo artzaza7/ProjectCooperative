@@ -35,7 +35,12 @@ function UpdateForm() {
     "ความสุข",
     "ค่าของใช้",
   ];
-
+  var header;
+  if (type == "INCOME") {
+    header = "รายรับ";
+  } else {
+    header = "รายจ่าย";
+  }
   // Data for create Income or Expense
   const [money, setMoney] = useState(0);
   const initialDropdownValue = type === "INCOME" ? incomes[0] : expenses[0];
@@ -240,12 +245,14 @@ function UpdateForm() {
 
                 <Modal show={show} onHide={handleClose}>
                   <Modal.Header closeButton>
-                    <Modal.Title>เพิ่มข้อมูลรายรับสำเร็จ</Modal.Title>
+                    <Modal.Title>แก้ไขข้อมูล{header}สำเร็จ</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     รายรับ <br />
-                    จำนวนเงิน: {money} <br />
+                    จำนวนเงิน: {money.toLocaleString()} <br />
                     ประเภท: {type} <br />
+                    กดปุ่มตกลงเพื่อแก้ไขข้อมูล
+                    <br />
                   </Modal.Body>
                   <Modal.Footer>
                     <Button variant="success" onClick={(e) => updateSubmit(e)}>

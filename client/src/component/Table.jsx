@@ -123,7 +123,7 @@ const DatatablePage = (props) => {
             var fixData = {
                 id: monies[i].id,
                 type: monies[i].type,
-                money: monies[i].money,
+                money: monies[i].money.toLocaleString(),
                 money_type: monies[i].money_type,
                 createDate: formattedDate,
                 createDay: monies[i].createDay,

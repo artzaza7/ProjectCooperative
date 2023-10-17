@@ -49,7 +49,7 @@ function ExpenseForm() {
 
     // Get token
     const token = localStorage.getItem("token");
-    handleShow();
+    handleClose();
     if (token) {
       var data = {
         money: money,
@@ -164,7 +164,7 @@ function ExpenseForm() {
               <div className="p-2">
                 <Button
                   className="btn btn-primary"
-                  onClick={(e) => handleSubmitFunction(e)}
+                  onClick={handleShow}
                   style={{
                     width: "150px",
                     height: "3rem",
@@ -180,11 +180,12 @@ function ExpenseForm() {
                   </Modal.Header>
                   <Modal.Body>
                     รายจ่าย <br />
-                    จำนวนเงิน: {money} <br />
+                    จำนวนเงิน: {money.toLocaleString()} <br />
                     ประเภท: {type} <br />
+                    กดปุ่มตกลงเพื่อเพิ่ม <br />
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button variant="success" onClick={handleClose}>
+                    <Button variant="success" onClick={handleSubmitFunction}>
                       ตกลง
                     </Button>
                   </Modal.Footer>

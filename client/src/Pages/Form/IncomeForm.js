@@ -33,10 +33,10 @@ function IncomeForm() {
   async function handleSubmitFunction(e) {
     // NOT REFESH PAGE
     e.preventDefault();
-
+    handleClose();
     // Get token
     const token = localStorage.getItem("token");
-    handleShow();
+
     if (token) {
       var data = {
         money: money,
@@ -151,7 +151,7 @@ function IncomeForm() {
               <div className="p-2">
                 <Button
                   className="btn btn-primary"
-                  onClick={(e) => handleSubmitFunction(e)}
+                  onClick={handleShow}
                   style={{
                     width: "150px",
                     height: "3rem",
@@ -167,11 +167,15 @@ function IncomeForm() {
                   </Modal.Header>
                   <Modal.Body>
                     รายรับ <br />
-                    จำนวนเงิน: {money} <br />
+                    จำนวนเงิน: {money.toLocaleString()} <br />
                     ประเภท: {type} <br />
+                    กดปุ่มตกลงเพื่อเพิ่มข้อมูล
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button variant="success" onClick={handleClose}>
+                    <Button
+                      variant="success"
+                      onClick={(e) => handleSubmitFunction(e)}
+                    >
                       ตกลง
                     </Button>
                   </Modal.Footer>

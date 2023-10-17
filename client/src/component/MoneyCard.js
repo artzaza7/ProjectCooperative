@@ -9,7 +9,9 @@ function MoneyCardBlue(props) {
           <Card.Title>
             <Card.Title>{props.cardText}</Card.Title>
           </Card.Title>
-          <Card.Footer className="MoneyText">{props.amountMoney} ฿</Card.Footer>
+          <Card.Footer className="MoneyText">
+            {props.amountMoney.toLocaleString()} ฿
+          </Card.Footer>
           <Card.Text className="CardText">{props.cardText}</Card.Text>
         </Card.Body>
       </Card>
@@ -28,7 +30,9 @@ function MoneyCardRed(props) {
       >
         <Card.Body>
           <Card.Title>{props.cardText}</Card.Title>
-          <Card.Footer className="MoneyText">{props.amountMoney} ฿</Card.Footer>
+          <Card.Footer className="MoneyText">
+            {props.amountMoney.toLocaleString()} ฿
+          </Card.Footer>
           <Card.Text className="CardText">{props.cardText}</Card.Text>
         </Card.Body>
       </Card>
@@ -49,7 +53,9 @@ function MoneyCardGreen(props) {
           <Card.Title>
             <Card.Title>{props.cardText}</Card.Title>
           </Card.Title>
-          <Card.Footer className="MoneyText">{props.amountMoney} ฿</Card.Footer>
+          <Card.Footer className="MoneyText">
+            {props.amountMoney.toLocaleString()} ฿
+          </Card.Footer>
           <Card.Text className="CardText">{props.cardText}</Card.Text>
         </Card.Body>
       </Card>
